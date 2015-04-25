@@ -8,6 +8,7 @@ package shop.Model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,52 +34,47 @@ public class SQLScript {
         return content;
     }
      
-    public String[] createStrings(char[] file) {
-        int size = file.length;
-        int len = 0;
-        String[] content = new String[size];
+    public ArrayList<String> createStrings(char[] file) {
+        ArrayList content = new ArrayList();
         String str = "";
         int endPos = 0;
         
-        for (int startPos = 0; startPos != file.length; startPos++) {
+        for (int startPos = 0; startPos < file.length; startPos++) {
             //Search for end of string
             do {
                 str += file[endPos];
                 endPos++;
-            } while(file[endPos] != ' ');
+            } while(file[endPos] != ' ' && endPos < file.length);
             
             //Reached end of string
-            content[len] = str;
+            content.add(str);
             startPos = endPos +1; 
-            len++;
         }
         
         return content;
     }
 
-    public String[] getQuery(String[] file, String[] keywords) {
-        String[] querys = new String[file.length];
+    public ArrayList getQuery(ArrayList file, ArrayList keywords) {
+        ArrayList querys = new ArrayList();
         String q = "";
         int startPos = -1;
         int endPos = -1;
-        int countQuerys = 0;
         
         if (file != null && keywords != null) {
-            for (int i = 0; !file[i].equals(file.length); i++) {
-                for (int j = 0; !keywords[j].equals(keywords.length); j++) {
+            for (int i = 0; !file.get(i).equals(file.size()); i++) {
+                for (int j = 0; !keywords.get(j).equals(keywords.size()); j++) {
                     
-                    if (file[i].equals(keywords)) {
+                    if (file.get(i).equals(keywords)) {
                         startPos = i; 
                     } 
 
-                    if (file[i].equals(");")) {
+                    if (file.get(i).equals(");")) {
                         endPos = i;
                         if (startPos != -1){
                             for (int k = startPos; k != endPos +1; k++) {
-                                   q += file[k];
+                                   q += file.indexOf(k);
                             }
-                            querys[countQuerys] = q;
-                            countQuerys++;
+                            querys.add(q);
                             
                             //Reset counts.
                             startPos = -1;

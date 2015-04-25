@@ -11,6 +11,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -71,16 +74,18 @@ public class ConnectSQLDB {
     }
   
     //Querys...
-    public String[] getItem(String tableName) {
-        String[] arr = null;
+    public Map getItem(String tableName) {
+        Map container = new HashMap();
         try {
-            rs = statement.executeQuery("SELECT id, name FROM " + tableName);
+            statement = connection.createStatement();
+            rs = statement.executeQuery("SELECT id, name FROM " + "test");
             rs.first();
             int count = 0;
+
             while (rs.next()) {
                 String name = rs.getString("name");
                 String id = String.valueOf(rs.getInt("id"));
-                arr[count] = name + id;
+                container.put(count, id + name);
                 count++;      
                 System.out.println(name + id);
             }
@@ -89,13 +94,13 @@ public class ConnectSQLDB {
         }
         
         cleanUp();
-        return arr;      
+        return container;      
     }
     
-    public void insert(String[] querys) {
+    public void insert(ArrayList<String> querys) {
         try {
-                for (int i = 0; i != querys.length; i++) {
-                    statement.executeUpdate(querys[i]);
+                for (int i = 0; i != querys.size(); i++) {
+                    statement.executeUpdate(querys.get(i));
                 }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -111,29 +116,18 @@ public class ConnectSQLDB {
             err.printStackTrace();
         }  
     }
-    
-    public void insertItem() {
-        try {
-                statement.executeUpdate("INSERT INTO test " +
-                    "VALUES (10, 'johan')"
-                );
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }  
-        
-        //cleanUp();
-    }
            
-    public String[] getTableNames() {
-        String[] tableNames = null;
+    public ArrayList<String> getTableNames() {
+        ArrayList<String> tableNames = new ArrayList();
         
         try {
             DatabaseMetaData md = connection.getMetaData();
-            ResultSet rs = md.getTables(null, null, null, new String[] {"TABLE"});
+            ResultSet rs = md.getTables(null, null, null, new String[]{"TABLE"});
+            rs.first();
             int count = 0;
             while(rs.next()) { 
-                tableNames[count] = rs.getString("TABLE_NAME");
-                count++;
+                tableNames.add(rs.getString("TABLE_NAME"));
+                count++; 
             }
         } catch(SQLException err) {
             err.printStackTrace();
@@ -142,10 +136,10 @@ public class ConnectSQLDB {
         return tableNames;
     }
             
-    public void deleteTables(String[] tableNames) {
+    public void deleteTables(ArrayList<String> tableNames) {
         try {
-           for ( int i = 0; i != tableNames.length; i++) {
-                statement.executeUpdate("DROP TABLE " + tableNames[i]);
+           for ( int i = 0; i != tableNames.size(); i++) {
+                statement.executeUpdate("DROP TABLE " + tableNames.get(i));
            }
         } catch(SQLException err) {
             err.printStackTrace();
