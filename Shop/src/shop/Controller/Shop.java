@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shop;
+package shop.Controller;
+
+import shop.Model.ConnectSQLDB;
 
 /**
  *
@@ -15,7 +17,13 @@ public class Shop {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ConnectSQLDB db = new ConnectSQLDB();
+        ConfigDatabase cf = new ConfigDatabase();
+        //db.insertItem();
+        db.getItem("test");
+        //cf.reset();
+        
+        
     }
     
 }
