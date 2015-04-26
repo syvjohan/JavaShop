@@ -5,6 +5,9 @@
  */
 package shop.Model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Zerkish
@@ -16,6 +19,7 @@ public class Item {
     private String name;
     private String category;
     private int score;
+    private int productId;
     
     public Item()
     {
@@ -23,6 +27,15 @@ public class Item {
         price = 0;
         name = "null";
         category = "null";
+    }
+    
+    public Item(int id, String name, String category, int price, int amount)
+    {
+        productId = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.amount = amount;
     }
 
     /**
@@ -94,7 +107,32 @@ public class Item {
     public void setScore(int score) {
         this.score = score;
     }
+
+    /**
+     * @return the productId
+     */
+    public int getProductId() {
+        return productId;
+    }
+
+    /**
+     * @param productId the productId to set
+     */
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
     
+    public Item makeGenericCopy()
+    {
+        Item i = new Item();
+        i.amount = 0;
+        i.category = category;
+        i.price = price;
+        i.productId = productId;
+        i.score = score;
+        i.name = name;
+        return i;        
+    }
     
     
 }
