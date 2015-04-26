@@ -6,6 +6,7 @@
 package shop.Controller;
 
 import shop.Model.ConnectSQLDB;
+import shop.View.View;
 
 /**
  *
@@ -20,10 +21,11 @@ public class Shop {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
         //db.insertItem();
-        db.getItem("test");
+        //db.getItem("test");
         //cf.reset();
         
-        
+        // Send in your controller implementing the ShopListener interface.
+        View view = new View(null);        
     }
     
 }
