@@ -30,24 +30,12 @@ public class ConfigDatabase implements ShopListener {
         connectSQLDB.deleteTables(tableNames);
         
         //Setup database as default.
-        ArrayList querys = getDefaultQuerys();
-        connectSQLDB.insert(querys);
+        ArrayList<String> queries = SQLHelper.getSQLQueries("query.txt");
+        connectSQLDB.insert(queries);
     }
     
     private ArrayList<String> getDefaultQuerys() {
-//        
-//        char[] readQuerys = sQLScript.readFile("query.txt");
-//        char[] readKeywords = sQLScript.readFile("SQLKeywords.txt");
-//        
-//        
-//        
-//        //ArrayList<String> querystoStr = sQLScript.createStrings(readQuerys);
-//        ArrayList<String> querystoStr = sQLScript.getSQLQueries(readQuerys);
-//        ArrayList<String> keywordstoStr = sQLScript.createStrings(readKeywords);
-//        
-//        ArrayList querys = sQLScript.getQuery(querystoStr, keywordstoStr);
-//        return querys;
-//        
+
         ArrayList<String> queries = SQLHelper.getSQLQueries("query.txt");
         return queries;
     }
