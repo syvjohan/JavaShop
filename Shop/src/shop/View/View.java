@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.text.StyleConstants.Size;
+import shop.Model.Item;
 
 /**
  *
@@ -68,6 +71,29 @@ public class View extends JFrame
                 
         setSidePanel(new CustomerPanel());
         
+        CustomerPanel cPnl = (CustomerPanel)sidePanel;
+        Item items[] = new Item[]{
+            new Item(234, "Boll", "Leksaker", 200, 4),
+            new Item(353, "Våffla", "Mat", 25, 2),
+            new Item(2859, "Dildo", "SexLeksaker", 50, 1),
+            new Item(19004, "Skägg", "Skönhetsprodukter", 999, 1),
+            new Item(232, "Boll", "Leksaker", 200, 4),
+        };
+        
+        productPanel = new ProductPanel((ActionEvent e)->
+        {
+            
+        });
+        
+        for (Item i : items)
+        {
+            cPnl.addItemToCart(i);
+            productPanel.addItem(i);
+        }
+        
+        cPnl.setUser("Zerkish");
+        
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.gridy = 0;
@@ -78,7 +104,7 @@ public class View extends JFrame
         gbc.weightx = 0.8f;
         gbc.fill = GridBagConstraints.BOTH;
         
-        productPanel = new ProductPanel();
+
         add(productPanel, gbc);
         
         JMenuBar menuBar = new JMenuBar();

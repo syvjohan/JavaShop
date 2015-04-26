@@ -6,9 +6,21 @@
 package shop.View;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.ListModel;
+import shop.Model.Item;
 
 /**
  *
@@ -16,22 +28,89 @@ import javax.swing.JButton;
  */
 public class CustomerPanel extends SidePanel {
     
+    private JTextArea taItems = new JTextArea();
+    private ArrayList<Item> cart = new ArrayList<Item>();
+    private JLabel lblUser = new JLabel();
+    
     public CustomerPanel()
     {
-        setBackground(Color.YELLOW);
+        //setBackground(Color.YELLOW);
         initGUI();
     }
     
     private void initGUI()
     {
-        JButton btn = new JButton("Purchase Stuffz!");
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+      
         
-        add(btn);
+        gbc.insets = new Insets(4, 4, 4, 4);
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.weightx = 1.0f;
+        gbc.weighty = 0.5f;
+        gbc.fill = GridBagConstraints.BOTH;
         
-        btn.addActionListener((ActionEvent e) -> 
+        //taItems.setSize(200, 300);
+        taItems.setEditable(false);
+        taItems.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        add(taItems, gbc);
+        
+        JButton btnCheckout = new JButton("Checkout");
+        gbc.gridx = 1;
+        gbc.gridwidth = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.5f;
+        add(btnCheckout, gbc);
+        
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.weightx = 1.0f;
+        gbc.weighty = 0.0f;
+        add(lblUser, gbc);
+    }
+    
+    public void setUser(String username)
+    {
+        lblUser.setText(String.format("Inloggad: (%s)", username));
+    }
+    
+    public void addItemToCart(Item item)
+    {
+        boolean addNew = true;
+        for(Item i : cart)
         {
-           btn.setText("CLICKEDZZZ");
-        });
+            if (i.getProductId() == item.getProductId())
+            {
+                i.setAmount(i.getAmount() + item.getAmount());
+                addNew = false;
+            }
+        }
+        
+        if (addNew)
+        {
+            Item i = item.makeGenericCopy();
+            i.setAmount(item.getAmount());
+            cart.add(i);
+        }
+        
+        taItems.setText("");
+        int totalPrice = 0;
+        for(Item i : cart)
+        {
+            String str = String.format("(%d)%-10s%4d(%d)kr\n", i.getAmount(),
+                i.getName(), i.getPrice(), i.getAmount() * i.getPrice());            
+            
+            taItems.append(str);
+            
+            totalPrice += i.getAmount() * i.getPrice();
+        }
+        
+        taItems.append(String.format("\nTotalt: %dkr", totalPrice));
     }
     
 }
