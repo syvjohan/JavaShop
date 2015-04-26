@@ -116,4 +116,10 @@ public class ConfigDatabase implements ShopListener {
     public Item[] getItems() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public void resetDataBaseDEBUG()
+    {
+        reset();
+    }
 }

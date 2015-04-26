@@ -37,4 +37,7 @@ public interface ShopListener {
     
     // Return all items.
     public abstract Item[] getItems();
+    
+    // Reset database
+    public abstract void resetDataBaseDEBUG();
 }
