@@ -107,11 +107,22 @@ public class ConnectSQLDB {
         }
     }
     
-    private void insert(String table, String[] values) {      
+    public void insert(String table, String[] values) {
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO ");
+        builder.append(table);
+        builder.append(" VALUES (");
+        for ( int i = 0; i < values.length; ++i)
+        {
+            builder.append("'" + values[i] + "'");
+            if (i < values.length - 1)
+                builder.append(", ");
+        }
+        builder.append(");");
+        
          try {
-                statement.executeUpdate("INSERT INTO " +
-                        table + "VALUES (" + values + ")"
-                );
+            statement.executeUpdate(builder.toString());
         } catch (SQLException err) {
             err.printStackTrace();
         }  

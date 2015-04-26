@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ public class View extends JFrame
         setTitle("JavaShop");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initGUI();
+        this.listener = listener;
     }    
     
     public void setSidePanel(SidePanel pnl)
@@ -120,36 +122,53 @@ public class View extends JFrame
         };
             
         JOptionPane.showMessageDialog(null, comps, "Login", JOptionPane.OK_CANCEL_OPTION);           
-        if ( listener != null)
+        if (listener != null)
         {
             setUserLevel(listener.login(tfUser.getText(), tfPassword.getText()));    
         }
-        
     }
     
     private void doRegister()
     {
-        JTextField tfFirstName = new JTextField();
-        JTextField tfLastName = new JTextField();
+        JTextField tfUsername = new JTextField();
         JTextField tfPassword = new JTextField();
+        JTextField tfName = new JTextField();
+        JTextField tfStreet = new JTextField();
+        JTextField tfZip = new JTextField();
         JTextField tfSSN = new JTextField();
-        JTextField tfTel = new JTextField();
-        JTextField tfAddr = new JTextField();
+        JComboBox cmLevel = new JComboBox();
+        cmLevel.addItem("Customer");
+        cmLevel.addItem("Employee");
         
         JComponent comps[] = new JComponent[] {
-            new JLabel("First name"),
-            tfFirstName,
-            new JLabel("Last name"),
-            tfLastName,
+            new JLabel("Username"),
+            tfUsername,
+            new JLabel("Password"),
+            tfPassword,
+            new JLabel("Name"),
+            tfName,
+            new JLabel("Street"),
+            tfStreet,
+            new JLabel("Zip"),
+            tfZip,
             new JLabel("SSN"),
             tfSSN,
-            new JLabel("Telefon"),
-            tfTel,
-            new JLabel("Address"),
-            tfAddr
+            new JLabel("User level"),
+            cmLevel
         };
         
         JOptionPane.showMessageDialog(null, comps, "Register", JOptionPane.OK_CANCEL_OPTION);
+        
+        if (listener != null)
+        {
+           int level = cmLevel.getSelectedIndex() + 1;
+           if (!listener.register(level, tfUsername.getText(),
+                   tfPassword.getText(), tfName.getText(),
+                   tfStreet.getText(), tfZip.getText(), tfSSN.getText()))
+           {
+               JOptionPane.showMessageDialog(null, "Registration failed!");
+           }
+        }
     }
     
     private void setUserLevel(int level)

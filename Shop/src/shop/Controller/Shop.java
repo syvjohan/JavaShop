@@ -25,7 +25,7 @@ public class Shop {
         cf.reset();
         
         // Send in your controller implementing the ShopListener interface.
-        View view = new View(null);        
+        View view = new View(cf);        
     }
     
 }

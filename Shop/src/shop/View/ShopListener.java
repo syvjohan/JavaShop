@@ -29,8 +29,8 @@ public interface ShopListener {
     public abstract int login(String userName, String password);
     
     // Return true if registration is successful.
-    public abstract boolean register(int level, String first, String last,
-            String ssn, String tel, String addr);
+    public abstract boolean register(int level, String userName,
+            String password, String name, String street, String zip, String ssn);
     
     // Return an item based on category and name.
     public abstract Item getItem(String category, String name);

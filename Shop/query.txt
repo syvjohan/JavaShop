@@ -18,7 +18,6 @@ CREATE TABLE Person (
 	name VARCHAR(50),
 	street VARCHAR(100),
 	postnumber VARCHAR(100),
-	postalAddress VARCHAR(100),
 	PRIMARY KEY (PERSONALNUMBER)
 );
 
@@ -48,3 +47,6 @@ CREATE TABLE Rating (
 	personalnumber VARCHAR(50) NOT NULL,
 	rate INT
 );
+
+INSERT INTO Staff VALUES ('9912120000', 'TestUser', 'testpassword');
+INSERT INTO Person VALUES ('9912120000', 'John Doe', 'Testvägen 0', '12345');
