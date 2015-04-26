@@ -22,7 +22,7 @@ public class SQLScript {
             try {
                 File file = new File(path);
                 FileReader filereader = new FileReader(file);
-                content = new char[(int) file.length()];
+                content = new char[(int) file.length() +1];
                 filereader.read(content);
                 filereader.close();
                 return content;
@@ -38,28 +38,30 @@ public class SQLScript {
         ArrayList content = new ArrayList();
         String str = "";
         int endPos = 0;
+        int startPos = 0;
         
-        for (int startPos = 0; startPos < file.length; startPos++) {
-            //Search for end of string
+        for (startPos = endPos; startPos < (file.length -1); startPos++) {
+            //Search for end of string                                     
             do {
                 str += file[endPos];
                 endPos++;
-            } while(file[endPos] != ' ' && endPos < file.length);
+            } while(file[endPos] != ' ' /* || (file[endPos] != '/' && file[endPos+1] != 'r') || 
+                    (file[endPos] != '/' && file[endPos+1] != 'n') ||
+                    (file[endPos] != '/' && file[endPos+1] != 't')*/);
             
             //Reached end of string
-            content.add(str);
-            startPos = endPos +1; 
+            content.add(str); 
+            str = "";
         }
-        
+
         return content;
     }
 
     public ArrayList getQuery(ArrayList file, ArrayList keywords) {
         ArrayList querys = new ArrayList();
-        String q = "";
-        int startPos = -1;
-        int endPos = -1;
-        
+        String q = "";  
+        int startPos = 0;
+        int endPos = 0;
         if (file != null && keywords != null) {
             for (int i = 0; !file.get(i).equals(file.size()); i++) {
                 for (int j = 0; !keywords.get(j).equals(keywords.size()); j++) {
@@ -67,7 +69,8 @@ public class SQLScript {
                     if (file.get(i).equals(keywords)) {
                         startPos = i; 
                     } 
-
+                    
+                    //Identifie end of query.
                     if (file.get(i).equals(");")) {
                         endPos = i;
                         if (startPos != -1){

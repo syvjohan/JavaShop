@@ -3,7 +3,7 @@ CREATE TABLE "Category" (
 	"name" VARCHAR(50),
 	PRIMARY KEY (ID)
 );
-
+ 
 CREATE TABLE "Item" (
 	"ID" INT NOT NULL,
 	"name" VARCHAR(50),

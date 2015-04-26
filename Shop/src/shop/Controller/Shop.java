@@ -20,8 +20,8 @@ public class Shop {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
         //db.insertItem();
-        db.getItem("test");
-        //cf.reset();
+        //db.getItem("test");
+        cf.reset();
         
         
     }
