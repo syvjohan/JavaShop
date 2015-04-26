@@ -5,8 +5,9 @@
  */
 package shop.Controller;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import shop.Model.ConnectSQLDB;
 import shop.Model.Item;
 import shop.Model.SQLHelper;
@@ -57,9 +58,23 @@ public class ConfigDatabase implements ShopListener {
 
     @Override
     public int login(String userName, String password) {
-        // TODO: Check staff and customer tables for userName
-        //       match it with password and return the correct level
-        //       (1 for customer, 2 for staff) return 0 on failure.        
+        Map<String, String> container = new HashMap<String, String>();
+        container = connectSQLDB.getValues("username", "password", "Staff");
+        boolean match = connectSQLDB.matchDBAndValues(container, userName, password);
+        //Staff.
+        if (match) {
+            return 2;
+        }
+        
+        container.clear();
+        container = connectSQLDB.getValues("username", "password", "Customer");
+        match = connectSQLDB.matchDBAndValues(container, userName, password);
+        //Customer.
+        if (match) {
+            return 1;
+        }
+        
+        //wrong username and password.     
         return 0;
     }
 
@@ -69,34 +84,43 @@ public class ConfigDatabase implements ShopListener {
         if (level < 1 || level > 2)
             return false;
         
-        // TODO: Check if the user already exists?
-        
-        StringBuilder builder = new StringBuilder();
-        
-        String table;
-        String userValues[] = new String[]
-        {
-            ssn, userName, password,
-        };
-        
-        String personValues[] = new String[]
-        {
-            ssn, name, street, zip
-        };
-        
-        if (level == 1) {
-            table = "Customer";
-        } else {
-            table = "Staff";
+        ArrayList<String> tables = new ArrayList<>();
+        tables.add("Customer");
+        tables.add("staff");
+        //Check if the user already exists.
+        boolean isFound = connectSQLDB.find(ssn, tables, "PERSONALNUMBER");
+        if (!isFound) {
+            StringBuilder builder = new StringBuilder();
+
+            String table;
+            String userValues[] = new String[]
+            {
+                ssn, userName, password,
+            };
+
+            String personValues[] = new String[]
+            {
+                ssn, name, street, zip
+            };
+
+            if (level == 1) {
+                table = "Customer";
+            } else {
+                table = "Staff";
+            }
+
+            connectSQLDB.insert(table, userValues);
+            connectSQLDB.insert("Person", personValues);
+            
+            return true;
         }
         
-        connectSQLDB.insert(table, userValues);
-        connectSQLDB.insert("Person", personValues);
-        return true;
+        return false;
     }
 
     @Override
     public Item getItem(String category, String name) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
