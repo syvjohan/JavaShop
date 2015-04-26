@@ -5,41 +5,48 @@
  */
 package shop.Controller;
 
+import java.io.File;
+import java.util.ArrayList;
 import shop.Model.ConnectSQLDB;
-import shop.Model.SQLScript;
+import shop.Model.SQLHelper;
 
 /**
  *
  * @author johan
  */
 public class ConfigDatabase {
-    ConnectSQLDB connectSQLDB;
-    SQLScript sQLScript;
+    private ConnectSQLDB connectSQLDB;
     
     public ConfigDatabase() {
         connectSQLDB = new ConnectSQLDB();
-        sQLScript = new SQLScript();
     }
     
     //Resets database to default.
     public void reset() {
         //Erase content in database.
-        String[] tableNames = connectSQLDB.getTableNames();
+        ArrayList tableNames = connectSQLDB.getTableNames();
         connectSQLDB.deleteTables(tableNames);
         
         //Setup database as default.
-        String[] querys = getDefaultQuerys();
+        ArrayList querys = getDefaultQuerys();
         connectSQLDB.insert(querys);
     }
     
-    private String[] getDefaultQuerys() {
-        char[] readQuerys = sQLScript.readFile(getClass().getResource("query.sql").getPath());
-        char[] readKeywords = sQLScript.readFile(getClass().getResource("SQLKeywords.txt").getPath());
-        
-        String[] querystoStr = sQLScript.createStrings(readQuerys);
-        String[] keywordstoStr = sQLScript.createStrings(readKeywords);
-        
-        String[] querys = sQLScript.getQuery(querystoStr, keywordstoStr);
-        return querys;
+    private ArrayList<String> getDefaultQuerys() {
+//        
+//        char[] readQuerys = sQLScript.readFile("query.txt");
+//        char[] readKeywords = sQLScript.readFile("SQLKeywords.txt");
+//        
+//        
+//        
+//        //ArrayList<String> querystoStr = sQLScript.createStrings(readQuerys);
+//        ArrayList<String> querystoStr = sQLScript.getSQLQueries(readQuerys);
+//        ArrayList<String> keywordstoStr = sQLScript.createStrings(readKeywords);
+//        
+//        ArrayList querys = sQLScript.getQuery(querystoStr, keywordstoStr);
+//        return querys;
+//        
+        ArrayList<String> queries = SQLHelper.getSQLQueries("query.txt");
+        return queries;
     }
 }
