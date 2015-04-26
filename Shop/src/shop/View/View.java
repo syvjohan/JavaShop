@@ -98,9 +98,17 @@ public class View extends JFrame
             doRegister();
         });
         
+        JMenuItem resetMenu = new JMenuItem("Reset Database");
+        resetMenu.addActionListener((ActionEvent e)->
+        {
+            if (listener != null)
+                listener.resetDataBaseDEBUG();
+        });
+        
         
         menu.add(loginMenu);
         menu.add(regMenu);
+        menu.add(resetMenu);
         
         setJMenuBar(menuBar);
         
