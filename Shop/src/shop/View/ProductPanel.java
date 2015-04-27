@@ -29,7 +29,17 @@ public class ProductPanel extends JPanel {
     
     public ProductPanel(ActionListener buyListener)
     {
-        add(scroll, BorderLayout.CENTER);
+        setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0f;
+        gbc.weighty = 1.0f;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        
+        add(scroll, gbc);
+        
+        scroll.createVerticalScrollBar();
         this.listener = buyListener;
         //setLayout(new GridBagLayout());
         //BoxLayout layout = new BoxLayout(panel, BoxLayout.PAGE_AXIS);

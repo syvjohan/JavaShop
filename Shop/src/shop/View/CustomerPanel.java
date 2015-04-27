@@ -6,6 +6,7 @@
 package shop.View;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,8 +19,10 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListModel;
+import javax.swing.ScrollPaneConstants;
 import shop.Model.Item;
 
 /**
@@ -31,6 +34,7 @@ public class CustomerPanel extends SidePanel {
     private JTextArea taItems = new JTextArea();
     private ArrayList<Item> cart = new ArrayList<Item>();
     private JLabel lblUser = new JLabel();
+    private JScrollPane scroll = new JScrollPane(taItems);
     
     public CustomerPanel()
     {
@@ -40,6 +44,7 @@ public class CustomerPanel extends SidePanel {
     
     private void initGUI()
     {
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
       
@@ -48,16 +53,16 @@ public class CustomerPanel extends SidePanel {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 4;
         gbc.gridheight = 1;
         gbc.weightx = 1.0f;
-        gbc.weighty = 0.5f;
+        gbc.weighty = 1.0f;
         gbc.fill = GridBagConstraints.BOTH;
         
-        //taItems.setSize(200, 300);
+        taItems.setSize(400, 300);
         taItems.setEditable(false);
         taItems.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        add(taItems, gbc);
+        add(scroll, gbc);
         
         JButton btnCheckout = new JButton("Checkout");
         gbc.gridx = 1;
@@ -72,6 +77,7 @@ public class CustomerPanel extends SidePanel {
         gbc.weightx = 1.0f;
         gbc.weighty = 0.0f;
         add(lblUser, gbc);
+        lblUser.setSize(400, 20);
     }
     
     public void setUser(String username)

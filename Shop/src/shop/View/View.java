@@ -56,8 +56,8 @@ public class View extends JFrame
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.weightx = 0.0f;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 0.2f;
         gbc.weighty = 1.0f; 
         
         sidePanel = pnl;
@@ -75,9 +75,29 @@ public class View extends JFrame
         Item items[] = new Item[]{
             new Item(234, "Boll", "Leksaker", 200, 4),
             new Item(353, "Våffla", "Mat", 25, 2),
-            new Item(2859, "Dildo", "SexLeksaker", 50, 1),
+            new Item(2859, "Gurka", "Mat", 50, 1),
             new Item(19004, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(232, "Boll", "Leksaker", 200, 4),
+            new Item(525245, "Boll", "Leksaker", 200, 4),
+            new Item(56456, "Boll", "Leksaker", 200, 4),
+            new Item(45656, "Våffla", "Mat", 25, 2),
+            new Item(123213, "Gurka", "Mat", 50, 1),
+            new Item(245389, "Skägg", "Skönhetsprodukter", 999, 1),
+            new Item(4535, "Boll", "Leksaker", 200, 4),
+            new Item(456456, "Boll", "Leksaker", 200, 4),
+            new Item(8457, "Våffla", "Mat", 25, 2),
+            new Item(654, "Gurka", "Mat", 50, 1),
+            new Item(345345, "Skägg", "Skönhetsprodukter", 999, 1),
+            new Item(675567, "Boll", "Leksaker", 200, 4),
+            new Item(345, "Boll", "Leksaker", 200, 4),
+            new Item(2344, "Våffla", "Mat", 25, 2),
+            new Item(4635, "Gurka", "Mat", 50, 1),
+            new Item(13454, "Skägg", "Skönhetsprodukter", 999, 1),
+            new Item(9234, "Boll", "Leksaker", 200, 4),
+            new Item(92383, "Boll", "Leksaker", 200, 4),
+            new Item(893498, "Våffla", "Mat", 25, 2),
+            new Item(9383, "Gurka", "Mat", 50, 1),
+            new Item(23489, "Skägg", "Skönhetsprodukter", 999, 1),
+            new Item(28333, "Boll", "Leksaker", 200, 4),
         };
         
         productPanel = new ProductPanel((ActionEvent e)->
