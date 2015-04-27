@@ -31,14 +31,8 @@ public class ConfigDatabase implements ShopListener {
         connectSQLDB.deleteTables(tableNames);
         
         //Setup database as default.
-        ArrayList<String> queries = SQLHelper.getSQLQueries("query.txt");
+        ArrayList<String> queries = SQLHelper.setDefaultSQLQueries("query.txt");
         connectSQLDB.insert(queries);
-    }
-    
-    private ArrayList<String> getDefaultQuerys() {
-
-        ArrayList<String> queries = SQLHelper.getSQLQueries("query.txt");
-        return queries;
     }
 
     @Override
@@ -119,14 +113,18 @@ public class ConfigDatabase implements ShopListener {
     }
 
     @Override
-    public Item getItem(String category, String name) {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Item getItem(String articleNumber) {
+        Item item = new Item();
+        return item = connectSQLDB.findItem(articleNumber);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Item[] getItems() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Map<Integer, Item> getItems() {
+        Map<Integer, Item> container = new HashMap();
+        return container = connectSQLDB.getAllItems();
+
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override

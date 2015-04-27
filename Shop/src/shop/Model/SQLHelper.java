@@ -24,7 +24,7 @@ public class SQLHelper {
         return c == '\r' || c == '\n' || c == '\r' || c == '\t';
     }
 
-    public static ArrayList<String> getSQLQueries(String path) {
+    public static ArrayList<String> setDefaultSQLQueries(String path) {
         ArrayList<String> queries = new ArrayList();
         
         File file = new File(path);

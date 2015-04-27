@@ -15,7 +15,7 @@ import java.util.Set;
 public class Item {
     
     private int amount;
-    private int price;
+    private float price;
     private String name;
     private String category;
     private int score;
@@ -29,7 +29,7 @@ public class Item {
         category = "null";
     }
     
-    public Item(int id, String name, String category, int price, int amount)
+    public Item(int id, String name, String category, float price, int amount)
     {
         productId = id;
         this.name = name;
@@ -55,14 +55,14 @@ public class Item {
     /**
      * @return the price
      */
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

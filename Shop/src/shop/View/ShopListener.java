@@ -5,6 +5,7 @@
  */
 package shop.View;
 
+import java.util.Map;
 import shop.Model.Item;
 
 /**
@@ -33,10 +34,10 @@ public interface ShopListener {
             String password, String name, String street, String zip, String ssn);
     
     // Return an item based on category and name.
-    public abstract Item getItem(String category, String name);
+    public abstract Item getItem(String articleNumber);
     
     // Return all items.
-    public abstract Item[] getItems();
+    public abstract Map<Integer, Item> getItems();
     
     // Reset database
     public abstract void resetDataBaseDEBUG();

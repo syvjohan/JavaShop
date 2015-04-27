@@ -50,7 +50,7 @@ public class ConnectSQLDB {
            
         } catch (ClassNotFoundException err) {
             err.printStackTrace();
-              System.out.println("Databas-driver could not found");
+              System.out.println("Databas-driver could not be found");
         }
     }
 
@@ -74,29 +74,35 @@ public class ConnectSQLDB {
         }  
     }
   
-    //Querys...
-    public Map getItem(String tableName) {
-        Map container = new HashMap();
+    public Map<Integer, Item> getAllItems() {
+        Map<Integer, Item> container = new HashMap();       
         try {
-            statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT id, name FROM " + "test");
-            rs.first();
+            rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
+                    + " Item.amount, Item.price, Category.name, Category.ID"
+                    + " FROM Item "
+                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID");
+            
             int count = 0;
-
+            rs.first();
             while (rs.next()) {
-                String name = rs.getString("name");
-                String id = String.valueOf(rs.getInt("id"));
-                container.put(count, id + name);
-                count++;      
-                System.out.println(name + id);
-            }
-        } catch (SQLException err) {
-             err.printStackTrace();
+                Item item = new Item();
+                item.setProductId(rs.getInt("Item.ARTICLENUMBER"));
+                item.setName(rs.getString("Item.name"));
+                item.setCategory(rs.getString("Category.name"));
+                item.setAmount(rs.getInt("Item.amount"));
+                item.setPrice(rs.getFloat("Item.price"));
+                
+                container.put(count, item);
+                count++;
+            }                   
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         
-        return container;      
+        return container;
     }
-    
+ 
     public boolean matchDBAndValues(Map<String, String> container, String value1, String value2) {
         Iterator it = container.entrySet().iterator();
         while (it.hasNext()) {
@@ -111,25 +117,54 @@ public class ConnectSQLDB {
     
     public Map<String, String> getValues(String columnName1, String columnName2, String table) {
         Map<String, String> container = new HashMap<String, String>();
-        
+     
         try {
                 rs = statement.executeQuery("SELECT " + columnName1 + "," +
                         columnName2 +
                             " FROM " + table);
               
                 rs.first();
-                do {
+                while(rs.next()) {
                     String user = rs.getString(columnName1); 
                     String pwd = rs.getString(columnName2);
                     container.put(user, pwd);
 
-                } while(rs.next());
+                }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
         return container;
+    }
+    
+    public Item findItem(String objToFind) {
+        Item item = new Item();
+        Integer obj = Integer.parseInt(objToFind);
+        
+        try {           
+            rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
+                    + " Item.amount, Item.price, Category.name, Category.ID"
+                    + " FROM Item "
+                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID");
+            
+            rs.first();
+            while (rs.next()) {
+                if (obj.equals(rs.getInt("Item.ARTICLENUMBER"))) {
+                    item.setProductId(rs.getInt("Item.ARTICLENUMBER"));
+                    item.setName(rs.getString("Item.name"));
+                    item.setCategory(rs.getString("Category.name"));
+                    item.setAmount(rs.getInt("Item.amount"));
+                    item.setPrice(rs.getFloat("Item.price"));
+                    return item;
+                }  
+            }
+            
+        } catch (SQLException err) {
+             err.printStackTrace();
+        }      
+
+        return item;
     }
     
     public boolean find(String objToFind, ArrayList<String> table, String columnName) {
@@ -141,11 +176,10 @@ public class ConnectSQLDB {
                         " FROM " + table.get(i));
 
                 rs.first();
-                do {
+                while (rs.next()) {
                     String value = rs.getString(columnName);
                     container.add(value);
-                    
-                } while (rs.next());
+                } ;
             }
             
             if (container.contains(objToFind)) {
@@ -161,9 +195,9 @@ public class ConnectSQLDB {
     
     public void insert(ArrayList<String> querys) {
         try {
-                for (int i = 0; i != querys.size(); i++) {
-                    statement.executeUpdate(querys.get(i));
-                }
+            for (int i = 0; i != querys.size(); i++) {
+                statement.executeUpdate(querys.get(i));
+            }
         } catch (SQLException err) {
             err.printStackTrace();
         }

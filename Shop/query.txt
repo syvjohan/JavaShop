@@ -5,12 +5,12 @@ CREATE TABLE Category (
 );
  
 CREATE TABLE Item (
-	ID INT NOT NULL,
+	ARTICLENUMBER INT NOT NULL,
 	name VARCHAR(50),
 	categoryID INT,
-	size INT,
+	amount INT(50),
 	price DECIMAL(18, 2),
-	PRIMARY KEY (ID)
+	PRIMARY KEY (ARTICLENUMBER)
 );
 
 CREATE TABLE Person (
@@ -50,3 +50,9 @@ CREATE TABLE Rating (
 
 INSERT INTO Staff VALUES ('9912120000', 'TestUser', 'testpassword');
 INSERT INTO Person VALUES ('9912120000', 'John Doe', 'Testvägen 0', '12345');
+
+INSERT INTO Item VALUES (1, 'lera', 1, 4, 10.00);
+INSERT INTO Item VALUES (2, 'fotboll', 2, 10, 490.00);
+
+INSERT INTO Category VALUES (1, 'form');
+INSERT INTO Category VALUES (2, 'bollar');

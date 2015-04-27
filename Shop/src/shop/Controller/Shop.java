@@ -20,11 +20,12 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        //db.insertItem();
-        //db.getItem("test");
+        cf.reset();
+        cf.getItem("2");
+        //cf.getItems();
         
         // Send in your controller implementing the ShopListener interface.
-        View view = new View(cf);        
+        //View view = new View(cf);        
     }
     
 }
