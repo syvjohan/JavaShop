@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -93,8 +94,69 @@ public class ConnectSQLDB {
              err.printStackTrace();
         }
         
-        cleanUp();
         return container;      
+    }
+    
+    public boolean matchDBAndValues(Map<String, String> container, String value1, String value2) {
+        Iterator it = container.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            if (pair.getKey().equals(value1) && pair.getValue().equals(value2)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public Map<String, String> getValues(String columnName1, String columnName2, String table) {
+        Map<String, String> container = new HashMap<String, String>();
+        
+        try {
+                rs = statement.executeQuery("SELECT " + columnName1 + "," +
+                        columnName2 +
+                            " FROM " + table);
+              
+                rs.first();
+                do {
+                    String user = rs.getString(columnName1); 
+                    String pwd = rs.getString(columnName2);
+                    container.put(user, pwd);
+
+                } while(rs.next());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return container;
+    }
+    
+    public boolean find(String objToFind, ArrayList<String> table, String columnName) {
+        ArrayList<String> container = new ArrayList<String>();
+        try {
+            for (int i = 0; i != table.size(); i++) {
+                //statement = connection.createStatement();
+                rs = statement.executeQuery("SELECT " + columnName +
+                        " FROM " + table.get(i));
+
+                rs.first();
+                do {
+                    String value = rs.getString(columnName);
+                    container.add(value);
+                    
+                } while (rs.next());
+            }
+            
+            if (container.contains(objToFind)) {
+                  return true;
+            }
+            
+        } catch (SQLException err) {
+             err.printStackTrace();
+        }      
+        
+        return false;
     }
     
     public void insert(ArrayList<String> querys) {
@@ -135,10 +197,8 @@ public class ConnectSQLDB {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null, null, null, new String[]{"TABLE"});
             rs.first();
-            int count = 0;
             while(rs.next()) { 
                 tableNames.add(rs.getString("TABLE_NAME"));
-                count++; 
             }
         } catch(SQLException err) {
             err.printStackTrace();
