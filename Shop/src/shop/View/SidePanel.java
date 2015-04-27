@@ -19,7 +19,7 @@ public class SidePanel extends JPanel {
     {
         //setBackground(Color.RED);
         setVisible(true);
-        setPreferredSize(new Dimension(180, 20));
+        setPreferredSize(new Dimension(200, 20));
     }
     
 }
