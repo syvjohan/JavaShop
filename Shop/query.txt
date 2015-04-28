@@ -1,11 +1,11 @@
 CREATE TABLE Category (
-	ID INT NOT NULL,
+	ID INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(50),
 	PRIMARY KEY (ID)
 );
  
 CREATE TABLE Item (
-	ARTICLENUMBER INT NOT NULL,
+	ARTICLENUMBER INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(50),
 	categoryID INT,
 	amount INT(50),
@@ -51,11 +51,11 @@ CREATE TABLE Rating (
 INSERT INTO Staff VALUES ('9912120000', 'TestUser', 'testpassword');
 INSERT INTO Person VALUES ('9912120000', 'John Doe', 'Testvägen 0', '12345');
 
-INSERT INTO Item VALUES (1, 'lera', 1, 4, 10.00);
-INSERT INTO Item VALUES (2, 'fotboll', 2, 10, 490.00);
+INSERT INTO Item (name, categoryID, amount, price) VALUES ('lera', 1, 4, 10.00);
+INSERT INTO Item (name, categoryID, amount, price) VALUES ('fotboll', 2, 10, 490.00);
 
-INSERT INTO Category VALUES (1, 'form');
-INSERT INTO Category VALUES (2, 'bollar');
+INSERT INTO Category (name) VALUES ('form');
+INSERT INTO Category (name) VALUES ('bollar');
 
 INSERT INTO Rating VALUES (1, '871010-6666', 5);
 INSERT INTO Rating VALUES (2, '841019-6666', 1);

@@ -50,7 +50,7 @@ public class ConnectSQLDB {
            
         } catch (ClassNotFoundException err) {
             err.printStackTrace();
-              System.out.println("Databas-driver could not be found");
+              System.out.println("Database-driver could not be found");
         }
     }
 
@@ -203,6 +203,64 @@ public class ConnectSQLDB {
         } catch (SQLException err) {
             err.printStackTrace();
         }
+    }
+    
+    public boolean insertItem(Item item, String ssn) {      
+        try {
+                //Insert Rating.
+                statement.executeUpdate("INSERT INTO Rating "
+                    + "VALUES ('" + item.getProductId() + "', '" +
+                        ssn + "', '" + item.getScore()+ "')");
+                
+                //Check if category exist.
+                Map<Integer, String> category = new HashMap();
+                int id = 0;
+                String name = "";
+                rs = statement.executeQuery("SELECT * FROM Category ");
+                rs.first();
+                while (rs.next()) {
+                    id = rs.getInt("ID");
+                    name = rs.getString("name");
+                    category.put(id, name);
+                }
+                
+                int categoryID = -1;
+                Iterator it = category.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    if (pair.getValue().equals(item.getCategory())) {
+                        categoryID = Integer.parseInt(pair.getKey().toString());
+                        break;
+                    }
+                }      
+                //If name dont exist.
+                if (categoryID == -1) {
+                    statement.executeUpdate("INSERT INTO Category (name) "
+                            + "VALUES ('" + item.getCategory() + "')");
+
+                    //Get category id.
+                    rs = statement.executeQuery("SELECT * FROM Category ");  
+
+                    while (rs.next()) {
+                        int tmpID = rs.getInt("ID");
+                        String tmpName = rs.getString("name");
+                        if (item.getCategory().equals(tmpName)) {
+                            categoryID = tmpID;
+                        }
+                    }
+                }
+                
+                statement.executeUpdate("INSERT INTO Item (name, categoryID, amount, price) "
+                    + "VALUES ('" + item.getName() + "', '"
+                    + categoryID + "', " + item.getAmount() + ", " + item.getPrice()
+                    + ")");
+                
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        return true;
     }
     
     public void insert(String table, String[] values) {

@@ -36,8 +36,9 @@ public class ConfigDatabase implements ShopListener {
     }
 
     @Override
-    public void addItem(Item item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addItem(Item item, String ssn) {
+        connectSQLDB.insertItem(item, ssn);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

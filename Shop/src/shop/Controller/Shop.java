@@ -6,6 +6,7 @@
 package shop.Controller;
 
 import shop.Model.ConnectSQLDB;
+import shop.Model.Item;
 import shop.View.View;
 
 /**
@@ -23,6 +24,14 @@ public class Shop {
         cf.reset();
         cf.getItem("2");
         cf.getItems();
+        Item item = new Item();
+        item.setProductId(5);
+        item.setName("plankor");
+        item.setAmount(10);
+        item.setPrice((float) 100.10);
+        item.setCategory("trä");
+        item.setScore(8);
+        cf.addItem(item, "870610");
         
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        
