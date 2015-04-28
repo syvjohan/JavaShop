@@ -115,15 +115,18 @@ public class ConfigDatabase implements ShopListener {
     @Override
     public Item getItem(String articleNumber) {
         Item item = new Item();
-        return item = connectSQLDB.findItem(articleNumber);
+        item = connectSQLDB.getItem(articleNumber);
+        return item;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Map<Integer, Item> getItems() {
-        Map<Integer, Item> container = new HashMap();
-        return container = connectSQLDB.getAllItems();
-
+    public Item[] getItems() {
+        ArrayList<Item> receive = new ArrayList<>();
+        receive = connectSQLDB.getAllItems();
+        final Item[] container = receive.toArray(new Item[receive.size()]);
+        return container;
+//final
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

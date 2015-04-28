@@ -22,7 +22,7 @@ public class Shop {
         ConfigDatabase cf = new ConfigDatabase();
         cf.reset();
         cf.getItem("2");
-        //cf.getItems();
+        cf.getItems();
         
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        

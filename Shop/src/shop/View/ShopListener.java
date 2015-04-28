@@ -33,11 +33,11 @@ public interface ShopListener {
     public abstract boolean register(int level, String userName,
             String password, String name, String street, String zip, String ssn);
     
-    // Return an item based on category and name.
+    // Return an item based on ArticleNumber.
     public abstract Item getItem(String articleNumber);
     
     // Return all items.
-    public abstract Map<Integer, Item> getItems();
+    public abstract Item[] getItems();
     
     // Reset database
     public abstract void resetDataBaseDEBUG();

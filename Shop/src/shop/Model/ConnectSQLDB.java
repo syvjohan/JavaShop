@@ -74,15 +74,15 @@ public class ConnectSQLDB {
         }  
     }
   
-    public Map<Integer, Item> getAllItems() {
-        Map<Integer, Item> container = new HashMap();       
+    public ArrayList<Item> getAllItems() {
+        ArrayList<Item> container = new ArrayList<>();
         try {
             rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
-                    + " Item.amount, Item.price, Category.name, Category.ID"
-                    + " FROM Item "
-                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID");
+                    + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
+                    + "FROM Item "
+                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
+                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
             
-            int count = 0;
             rs.first();
             while (rs.next()) {
                 Item item = new Item();
@@ -91,9 +91,9 @@ public class ConnectSQLDB {
                 item.setCategory(rs.getString("Category.name"));
                 item.setAmount(rs.getInt("Item.amount"));
                 item.setPrice(rs.getFloat("Item.price"));
+                item.setScore(rs.getInt("Rating.rate"));
                 
-                container.put(count, item);
-                count++;
+                container.add(item);
             }                   
 
         } catch (SQLException e) {
@@ -138,15 +138,16 @@ public class ConnectSQLDB {
         return container;
     }
     
-    public Item findItem(String objToFind) {
+    public Item getItem(String objToFind) {
         Item item = new Item();
         Integer obj = Integer.parseInt(objToFind);
         
         try {           
             rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
-                    + " Item.amount, Item.price, Category.name, Category.ID"
-                    + " FROM Item "
-                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID");
+                    + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
+                    + "FROM Item "
+                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
+                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
             
             rs.first();
             while (rs.next()) {
@@ -156,6 +157,7 @@ public class ConnectSQLDB {
                     item.setCategory(rs.getString("Category.name"));
                     item.setAmount(rs.getInt("Item.amount"));
                     item.setPrice(rs.getFloat("Item.price"));
+                    item.setScore(rs.getInt("Rating.rate"));
                     return item;
                 }  
             }
