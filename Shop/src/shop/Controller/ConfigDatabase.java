@@ -38,17 +38,18 @@ public class ConfigDatabase implements ShopListener {
     @Override
     public void addItem(Item item, String ssn) {
         connectSQLDB.insertItem(item, ssn);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeItem(Item item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean removeItem(Item item) {
+       boolean isDeleted = connectSQLDB.deleteItem(item);
+       return isDeleted;
     }
 
     @Override
-    public void setItemScore(Item item, int score) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean setItemScore(Item item, int rating, String ssn) {
+        boolean isChanged = connectSQLDB.updateItemScore(item, rating, ssn);
+        return isChanged;
     }
 
     @Override
@@ -118,7 +119,6 @@ public class ConfigDatabase implements ShopListener {
         Item item = new Item();
         item = connectSQLDB.getItem(articleNumber);
         return item;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -127,8 +127,6 @@ public class ConfigDatabase implements ShopListener {
         receive = connectSQLDB.getAllItems();
         final Item[] container = receive.toArray(new Item[receive.size()]);
         return container;
-//final
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override

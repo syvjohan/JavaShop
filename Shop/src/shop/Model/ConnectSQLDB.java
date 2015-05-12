@@ -169,13 +169,67 @@ public class ConnectSQLDB {
         return item;
     }
     
-    public boolean find(String objToFind, ArrayList<String> table, String columnName) {
+    public boolean deleteItem(Item item) {
+        try {  
+            rs = statement.executeQuery("SELECT * FROM Item");
+            
+            rs.first();
+            while(rs.next()) {
+                String name = rs.getString("name");
+                int amount = rs.getInt("amount");
+                int art = rs.getInt("ARTICLENUMBER");
+                
+                if (name == item.getName() && art == item.getProductId()) {
+                    if (amount > item.getAmount()) {
+                        statement.executeUpdate("UPDATE Item " +
+                                "SET Item.amount = " + item.getAmount() +
+                                "WHERE Item.name = " + item.getName() + 
+                                "AND Item.ARTICLENUMBER = " + item.getProductId());
+                        
+                        return true;
+                    }
+                }
+            }
+            
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+                   
+        return false;
+    }
+
+    public boolean updateItemScore(Item item, int rating, String ssn) {
+       try {  
+            rs = statement.executeQuery("SELECT Item.name, Item.ARTICLENUMBER FROM Item");
+            
+            rs.first();
+            while(rs.next()) {
+                String name = rs.getString("Item.name");
+                int artItem = rs.getInt("Item.ARTICLENUMBER");
+                
+                if (name == item.getName() && artItem == item.getProductId()) {
+                        statement.executeUpdate("INSERT INTO Rating " +
+                                "VALUES(" + item.getProductId() + ", " + ssn +
+                                ", " + rating + ")"); 
+                        
+                        return true;
+                }
+            }
+            
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+                   
+        return false;
+    }
+    
+    public boolean find(String objToFind, ArrayList<String> tables, String columnName) {
         ArrayList<String> container = new ArrayList<String>();
         try {
-            for (int i = 0; i != table.size(); i++) {
-                //statement = connection.createStatement();
+            for (int i = 0; i != tables.size(); i++) {
+
                 rs = statement.executeQuery("SELECT " + columnName +
-                        " FROM " + table.get(i));
+                        " FROM " + tables.get(i));
 
                 rs.first();
                 while (rs.next()) {
