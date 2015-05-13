@@ -41,8 +41,9 @@ public class View extends JFrame
     {
         setTitle("JavaShop");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        initGUI();
+        setMinimumSize(new Dimension(800 ,600));
         this.listener = listener;
+        initGUI();
     }    
     
     public void setSidePanel(SidePanel pnl)

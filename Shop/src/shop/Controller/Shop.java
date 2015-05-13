@@ -34,7 +34,7 @@ public class Shop {
         cf.addItem(item, "870610");
         
         // Send in your controller implementing the ShopListener interface.
-        //View view = new View(cf);        
+        View view = new View(cf);        
     }
     
 }

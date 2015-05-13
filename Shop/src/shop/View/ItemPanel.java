@@ -71,7 +71,7 @@ public class ItemPanel extends JPanel {
         
         lblItemName.setText(String.format(" %-10s", item.getName()));
         lblItemStock.setText(String.format("Stock: %-4d", item.getAmount()));
-        lblItemPrice.setText(String.format("Price: %-5d", item.getPrice()));
+        lblItemPrice.setText(String.format("Price: %-5.2fkr", item.getPrice()));
         
         doLayout();
     }
