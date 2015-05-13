@@ -19,6 +19,7 @@ import shop.View.ShopListener;
  */
 public class ConfigDatabase implements ShopListener {
     private ConnectSQLDB connectSQLDB;
+    private int indexID = 0;
     
     public ConfigDatabase() {
         connectSQLDB = new ConnectSQLDB();
@@ -34,10 +35,20 @@ public class ConfigDatabase implements ShopListener {
         ArrayList<String> queries = SQLHelper.setDefaultSQLQueries("query.txt");
         connectSQLDB.insert(queries);
     }
+    
+    @Override
+    public int getNewID() {
+       ArrayList<Integer> container = connectSQLDB.getAllItemsID();
+       do {
+           ++indexID;
+       } while (container.contains(indexID));
+       
+        return indexID;
+    }
 
     @Override
-    public int addItem(Item item, String ssn) {
-        return connectSQLDB.insertItem(item, ssn);
+    public int addItem(Item item) {
+        return connectSQLDB.insertItem(item);
     }
 
     @Override
