@@ -108,7 +108,7 @@ public class CustomerPanel extends SidePanel {
         int totalPrice = 0;
         for(Item i : cart)
         {
-            String str = String.format("(%d)%-10s%4d(%d)kr\n", i.getAmount(),
+            String str = String.format("(%d)%-10s%4.2f(%.2f)kr\n", i.getAmount(),
                 i.getName(), i.getPrice(), i.getAmount() * i.getPrice());            
             
             taItems.append(str);

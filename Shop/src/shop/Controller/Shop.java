@@ -42,7 +42,7 @@ public class Shop {
         cf.getItems();
 
         // Send in your controller implementing the ShopListener interface.
-        //View view = new View(cf);        
+        View view = new View(cf);        
     }
     
 }
