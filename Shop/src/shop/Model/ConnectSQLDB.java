@@ -393,10 +393,10 @@ public class ConnectSQLDB {
         try {
             rs = statement.executeQuery("SELECT ID FROM Item");
             rs.first();
-            while(rs.next()) {
-                int id = rs.getInt("ID");
-                container.add(id);
-            }
+            do {
+               int id = rs.getInt("ID");
+                container.add(id); 
+            } while(rs.next());
              
         } catch (SQLException err) {
             err.printStackTrace();
