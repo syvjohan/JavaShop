@@ -287,11 +287,6 @@ public class ConnectSQLDB {
                    }
                }
                
-                //Insert Rating.
-                statement.executeUpdate("INSERT INTO Rating "
-                    + "VALUES ('" + item.getProductId() + "', '" +
-                        ssn + "', '" + item.getScore()+ "')");
-                
                 //Check if category exist.
                 Map<Integer, String> category = new HashMap();
                 int id = 0;
