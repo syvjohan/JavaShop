@@ -22,6 +22,7 @@ public class Shop {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
         cf.reset();
+        
         /*Item item = new Item();
         item.setProductId(3);
         item.setName("reglar");
@@ -38,8 +39,7 @@ public class Shop {
         item2.setPrice((float) 490.00);
         item2.setCategory("bollar");
         item2.setScore(8);*/
-        
-        System.out.println(cf.getNewID());
+        cf.getItems();
 
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        

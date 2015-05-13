@@ -5,7 +5,7 @@ CREATE TABLE Category (
 );
  
 CREATE TABLE Item (
-	ID INT NOT NULL AUTO_INCREMENT,
+	ID INT NOT NULL,
 	name VARCHAR(50),
 	categoryID INT,
 	amount INT(50),
