@@ -179,12 +179,12 @@ public class ConnectSQLDB {
                 int amount = rs.getInt("amount");
                 int art = rs.getInt("ARTICLENUMBER");
                 
-                if (name == item.getName() && art == item.getProductId()) {
-                    if (amount > item.getAmount()) {
+                if (name.equals(item.getName()) && art == item.getProductId()) {
+                    if (amount >= item.getAmount()) {
                         statement.executeUpdate("UPDATE Item " +
-                                "SET Item.amount = " + item.getAmount() +
-                                "WHERE Item.name = " + item.getName() + 
-                                "AND Item.ARTICLENUMBER = " + item.getProductId());
+                                " SET Item.amount = Item.amount - " + item.getAmount() +
+                                " WHERE Item.name = '" + item.getName() + "'" + 
+                                " AND Item.ARTICLENUMBER = '" + item.getProductId() + "'");
                         
                         return true;
                     }
@@ -207,11 +207,11 @@ public class ConnectSQLDB {
                 String name = rs.getString("Item.name");
                 int artItem = rs.getInt("Item.ARTICLENUMBER");
                 
-                if (name == item.getName() && artItem == item.getProductId()) {
+                if (name.equals(item.getName()) && artItem == item.getProductId()) {
                         statement.executeUpdate("INSERT INTO Rating " +
-                                "VALUES(" + item.getProductId() + ", " + ssn +
+                                "VALUES(" + item.getProductId() + ", '" + ssn + "'" +
                                 ", " + rating + ")"); 
-                        
+
                         return true;
                 }
             }
