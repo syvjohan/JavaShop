@@ -41,4 +41,7 @@ public interface ShopListener {
     
     // Reset database
     public abstract void resetDataBaseDEBUG();
+    
+    // Update an item, the item id should already exist.
+    public abstract boolean updateItem(Item item);
 }

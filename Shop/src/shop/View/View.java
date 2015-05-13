@@ -63,57 +63,32 @@ public class View extends JFrame
         
         sidePanel = pnl;
         add(sidePanel, gbc);
-       
+        sidePanel.setVisible(false);
+        sidePanel.setVisible(true);
     }
     
     private void initGUI()
     {
         setLayout(new GridBagLayout());
                 
-        setSidePanel(new CustomerPanel());
+        setSidePanel(new AnonPanel());
         
-        CustomerPanel cPnl = (CustomerPanel)sidePanel;
-        Item items[] = new Item[]{
-            new Item(234, "Boll", "Leksaker", 200, 4),
-            new Item(353, "Våffla", "Mat", 25, 2),
-            new Item(2859, "Gurka", "Mat", 50, 1),
-            new Item(19004, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(525245, "Boll", "Leksaker", 200, 4),
-            new Item(56456, "Boll", "Leksaker", 200, 4),
-            new Item(45656, "Våffla", "Mat", 25, 2),
-            new Item(123213, "Gurka", "Mat", 50, 1),
-            new Item(245389, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(4535, "Boll", "Leksaker", 200, 4),
-            new Item(456456, "Boll", "Leksaker", 200, 4),
-            new Item(8457, "Våffla", "Mat", 25, 2),
-            new Item(654, "Gurka", "Mat", 50, 1),
-            new Item(345345, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(675567, "Boll", "Leksaker", 200, 4),
-            new Item(345, "Boll", "Leksaker", 200, 4),
-            new Item(2344, "Våffla", "Mat", 25, 2),
-            new Item(4635, "Gurka", "Mat", 50, 1),
-            new Item(13454, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(9234, "Boll", "Leksaker", 200, 4),
-            new Item(92383, "Boll", "Leksaker", 200, 4),
-            new Item(893498, "Våffla", "Mat", 25, 2),
-            new Item(9383, "Gurka", "Mat", 50, 1),
-            new Item(23489, "Skägg", "Skönhetsprodukter", 999, 1),
-            new Item(28333, "Boll", "Leksaker", 200, 4),
-        };
+        Item items[] = listener.getItems();
         
-        productPanel = new ProductPanel((ActionEvent e)->
-        {
-            
+        // Listener for the product panel
+        // Depends on the current side panel.
+        productPanel = new ProductPanel((Item i)-> {
+            if ( sidePanel instanceof EmployeePanel ) {
+                ((EmployeePanel)sidePanel).editItem(i);
+            } else if ( sidePanel instanceof CustomerPanel ) {
+                ((CustomerPanel)sidePanel).addItemToCart(i);
+            }
         });
         
         for (Item i : items)
         {
-            cPnl.addItemToCart(i);
             productPanel.addItem(i);
         }
-        
-        cPnl.setUser("Zerkish");
-        
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -167,20 +142,23 @@ public class View extends JFrame
     
     private void doLogin()
     {
-        JTextField tfUser = new JTextField();
-        JTextField tfPassword = new JTextField();
-        JComponent comps[] = new JComponent[]{
-           new JLabel("Username"),
-           tfUser,
-           new JLabel("Password"),
-           tfPassword             
-        };
-            
-        JOptionPane.showMessageDialog(null, comps, "Login", JOptionPane.OK_CANCEL_OPTION);           
-        if (listener != null)
-        {
-            setUserLevel(listener.login(tfUser.getText(), tfPassword.getText()));    
-        }
+        setUserLevel("Peter", 2);
+        return;
+        
+//        JTextField tfUser = new JTextField();
+//        JTextField tfPassword = new JTextField();
+//        JComponent comps[] = new JComponent[]{
+//           new JLabel("Username"),
+//           tfUser,
+//           new JLabel("Password"),
+//           tfPassword             
+//        };
+//            
+//        JOptionPane.showMessageDialog(null, comps, "Login", JOptionPane.OK_CANCEL_OPTION);           
+//        if (listener != null)
+//        {
+//            setUserLevel(tfUser.getText(), listener.login(tfUser.getText(), tfPassword.getText()));    
+//        }
     }
     
     private void doRegister()
@@ -226,18 +204,27 @@ public class View extends JFrame
         }
     }
     
-    private void setUserLevel(int level)
+    private void setUserLevel(String user, int level)
     {
+        CustomerPanel cpnl;
+        EmployeePanel epnl;
+        productPanel.setUserLevel(level);
+        
         switch(level)
         {
             case 0:
-                
+                setSidePanel(new AnonPanel());
                 break;
             case 1:
+                cpnl = new CustomerPanel();
+                cpnl.setUser(user);
+                setSidePanel(cpnl);
                 
                 break;
             case 2:
-                
+                epnl = new EmployeePanel(listener);
+                epnl.setUser(user);
+                setSidePanel(epnl);
                 break;
         }
     }

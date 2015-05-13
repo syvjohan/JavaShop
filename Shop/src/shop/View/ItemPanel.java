@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shop.View;
 
 import java.awt.Color;
@@ -10,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -28,16 +24,17 @@ public class ItemPanel extends JPanel {
     private JLabel lblItemStock = new JLabel();
     private JLabel lblItemPrice = new JLabel();
     private JButton btnAddToCart = new JButton("Buy");
+    private ItemListener listener;
     
-    public ItemPanel(Item item, ActionListener listener)
-    {
+    public ItemPanel(Item item, ItemListener listener) {
         this.item = item;
+        this.listener = listener;
         
         //setBackground(Color.CYAN);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         
-        gbc.fill = GridBagConstraints.BOTH;
+        
         gbc.gridx  = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -51,8 +48,17 @@ public class ItemPanel extends JPanel {
         gbc.gridx = 2;
         add(lblItemStock, gbc);
         gbc.gridx = 3;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         add(btnAddToCart, gbc);
-        btnAddToCart.addActionListener(listener);
+        btnAddToCart.addActionListener((ActionEvent e) -> {
+            if (listener != null) {
+                listener.onItem(item);
+            }
+        });
+        
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         
         lblItemName.setAlignmentX(LEFT_ALIGNMENT);
         //lblItemName.setOpaque(true);
@@ -74,5 +80,19 @@ public class ItemPanel extends JPanel {
         lblItemPrice.setText(String.format("Price: %-5.2fkr", item.getPrice()));
         
         doLayout();
+    }
+    
+    public void setUserLevel(int n) {
+        if ( n == 0 ) {
+            btnAddToCart.setEnabled(false);
+        } else if ( n >= 1 ) {
+            btnAddToCart.setEnabled(true);
+        }
+        
+        if ( n == 2 ) {
+            btnAddToCart.setText("Edit");
+        } else {
+            btnAddToCart.setText("Buy");
+        }
     }
 }

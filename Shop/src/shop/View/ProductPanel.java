@@ -8,9 +8,11 @@ package shop.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -22,12 +24,13 @@ import shop.Model.Item;
  * @author Zerkish
  */
 public class ProductPanel extends JPanel {
-    private ActionListener listener;
+    private ItemListener listener;
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel panel = new JPanel();
     private JScrollPane scroll = new JScrollPane(panel);
+    private ArrayList<ItemPanel> items = new ArrayList();
     
-    public ProductPanel(ActionListener buyListener)
+    public ProductPanel(ItemListener listener)
     {
         setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
@@ -40,7 +43,7 @@ public class ProductPanel extends JPanel {
         add(scroll, gbc);
         
         scroll.createVerticalScrollBar();
-        this.listener = buyListener;
+        this.listener = listener;
         //setLayout(new GridBagLayout());
         //BoxLayout layout = new BoxLayout(panel, BoxLayout.PAGE_AXIS);
         //panel.setLayout(layout);
@@ -60,12 +63,19 @@ public class ProductPanel extends JPanel {
 //        gbc.gridy = 0;
     }
     
-    public void addItem(Item item)
-    {
+    public void addItem(Item item) {
         ItemPanel pnl = new ItemPanel(item, listener);
+        items.add(pnl);
+        pnl.setMaximumSize( new Dimension(9999, 28));
         pnl.setAlignmentX(LEFT_ALIGNMENT);
         gbc.gridy++;
         panel.add(pnl, BorderLayout.CENTER);
+    }
+    
+    public void setUserLevel(int n) {
+        for ( ItemPanel pnl : items ) {
+            pnl.setUserLevel( n );
+        }
     }
     
     public void clearItems()

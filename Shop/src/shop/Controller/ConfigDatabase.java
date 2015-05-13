@@ -134,4 +134,9 @@ public class ConfigDatabase implements ShopListener {
     {
         reset();
     }
+    
+    @Override
+    public boolean updateItem(Item item) {
+        return false;
+    }
 }
