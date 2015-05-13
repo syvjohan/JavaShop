@@ -15,7 +15,7 @@ import shop.Model.Item;
 public interface ShopListener {
     
     // Add an item in a certain category etc.
-    public abstract void addItem(Item item, String ssn);
+    public abstract int addItem(Item item);
     
     // Remove 1 or more items.
     public abstract boolean removeItem(Item item);
@@ -44,4 +44,7 @@ public interface ShopListener {
     
     // Update an item, the item id should already exist.
     public abstract boolean updateItem(Item item);
+    
+    //Creates a unique productId
+    public abstract int getNewID();
 }

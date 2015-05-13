@@ -5,6 +5,7 @@
  */
 package shop.Model;
 
+import com.sun.corba.se.spi.ior.IdentifiableContainerBase;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -77,16 +78,16 @@ public class ConnectSQLDB {
     public ArrayList<Item> getAllItems() {
         ArrayList<Item> container = new ArrayList<>();
         try {
-            rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
+            rs = statement.executeQuery("SELECT Item.ID, Item.name, Item.categoryID, "
                     + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
                     + "FROM Item "
                     + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
+                    + "INNER JOIN Rating ON Item.ID = Rating.ID");
             
             rs.first();
             while (rs.next()) {
                 Item item = new Item();
-                item.setProductId(rs.getInt("Item.ARTICLENUMBER"));
+                item.setProductId(rs.getInt("Item.ID"));
                 item.setName(rs.getString("Item.name"));
                 item.setCategory(rs.getString("Category.name"));
                 item.setAmount(rs.getInt("Item.amount"));
@@ -143,16 +144,16 @@ public class ConnectSQLDB {
         Integer obj = Integer.parseInt(objToFind);
         
         try {           
-            rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
+            rs = statement.executeQuery("SELECT Item.ID, Item.name, Item.categoryID, "
                     + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
                     + "FROM Item "
                     + "INNER JOIN Category ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
+                    + "INNER JOIN Rating ON Item.ID= Rating.ID");
             
             rs.first();
             while (rs.next()) {
-                if (obj.equals(rs.getInt("Item.ARTICLENUMBER"))) {
-                    item.setProductId(rs.getInt("Item.ARTICLENUMBER"));
+                if (obj.equals(rs.getInt("Item.ID"))) {
+                    item.setProductId(rs.getInt("Item.ID"));
                     item.setName(rs.getString("Item.name"));
                     item.setCategory(rs.getString("Category.name"));
                     item.setAmount(rs.getInt("Item.amount"));
@@ -177,14 +178,14 @@ public class ConnectSQLDB {
             while(rs.next()) {
                 String name = rs.getString("name");
                 int amount = rs.getInt("amount");
-                int art = rs.getInt("ARTICLENUMBER");
+                int art = rs.getInt("ID");
                 
                 if (name.equals(item.getName()) && art == item.getProductId()) {
                     if (amount >= item.getAmount()) {
                         statement.executeUpdate("UPDATE Item " +
                                 " SET Item.amount = Item.amount - " + item.getAmount() +
                                 " WHERE Item.name = '" + item.getName() + "'" + 
-                                " AND Item.ARTICLENUMBER = '" + item.getProductId() + "'");
+                                " AND Item.ID = '" + item.getProductId() + "'");
                         
                         return true;
                     }
@@ -200,12 +201,12 @@ public class ConnectSQLDB {
 
     public boolean updateItemScore(Item item, int rating, String ssn) {
        try {  
-            rs = statement.executeQuery("SELECT Item.name, Item.ARTICLENUMBER FROM Item");
+            rs = statement.executeQuery("SELECT Item.name, Item.ID FROM Item");
             
             rs.first();
             while(rs.next()) {
                 String name = rs.getString("Item.name");
-                int artItem = rs.getInt("Item.ARTICLENUMBER");
+                int artItem = rs.getInt("Item.ID");
                 
                 if (name.equals(item.getName()) && artItem == item.getProductId()) {
                         statement.executeUpdate("INSERT INTO Rating " +
@@ -259,26 +260,30 @@ public class ConnectSQLDB {
         }
     }
     
-    public void insertItem(Item item, String ssn) {      
+    //Returns 1 if item existed, item.amount was updated.
+    //Returns 2 if item not existed and was succesfuly added to db.
+    //Returns 0 if adding item fails.
+    public int insertItem(Item item) {      
         try {
-                //Check if item already exist in database.
+               //Check if item already exist in database.
                rs = statement.executeQuery("SELECT Category.name, Category.ID, "
-                    + "Item.name, Item.categoryID, Item.ARTICLENUMBER, Rating.ARTICLENUMBER, Rating.rate "
+                    + "Item.name, Item.categoryID, Item.ID, Rating.ID, Rating.rate "
                     + "FROM Item "
                     + "INNER JOIN Category ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
+                    + "INNER JOIN Rating ON Item.ID = Rating.ID");
                
                rs.first();
                while (rs.next()) {
                    String cat = rs.getString("Category.name");
                    String name = rs.getString("Item.name");
-                   String art = rs.getString("Item.ARTICLENUMBER");
+                   String art = rs.getString("Item.ID");
                    if (cat.equals(item.getCategory()) && name.equals(item.getName())) {
-                        statement.executeUpdate("UPDATE Rating "
-                            + "SET Rating.rate = Rating.rate + 1 "
-                            + "WHERE Rating.ARTICLENUMBER = " + art);
+                        statement.executeUpdate("UPDATE Item " +
+                                " SET Item.amount = Item.amount + " + item.getAmount() +
+                                " WHERE Item.name = '" + item.getName() + "'" + 
+                                " AND Item.ID = '" + item.getProductId() + "'");
                        
-                        return;
+                        return 1;
                    }
                }
                
@@ -330,9 +335,13 @@ public class ConnectSQLDB {
                     + categoryID + "', " + item.getAmount() + ", " + item.getPrice() 
                     + ")");
                 
+                return 2;
+                
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return 0;
     }
     
     public void insert(String table, String[] values) {
@@ -381,6 +390,24 @@ public class ConnectSQLDB {
         } catch(SQLException err) {
             err.printStackTrace();
         } 
+    }
+    
+    public ArrayList<Integer> getAllItemsID() {
+        ArrayList<Integer> container = new ArrayList<Integer>();
+        
+        try {
+            rs = statement.executeQuery("SELECT ID FROM Item");
+            rs.first();
+            while(rs.next()) {
+                int id = rs.getInt("ID");
+                container.add(id);
+            }
+             
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return container;
     }
     
     @Override

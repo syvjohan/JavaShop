@@ -19,6 +19,7 @@ import shop.View.ShopListener;
  */
 public class ConfigDatabase implements ShopListener {
     private ConnectSQLDB connectSQLDB;
+    private int indexID = 0;
     
     public ConfigDatabase() {
         connectSQLDB = new ConnectSQLDB();
@@ -34,22 +35,30 @@ public class ConfigDatabase implements ShopListener {
         ArrayList<String> queries = SQLHelper.setDefaultSQLQueries("query.txt");
         connectSQLDB.insert(queries);
     }
+    
+    @Override
+    public int getNewID() {
+       ArrayList<Integer> container = connectSQLDB.getAllItemsID();
+       do {
+           ++indexID;
+       } while (container.contains(indexID));
+       
+        return indexID;
+    }
 
     @Override
-    public void addItem(Item item, String ssn) {
-        connectSQLDB.insertItem(item, ssn);
+    public int addItem(Item item) {
+        return connectSQLDB.insertItem(item);
     }
 
     @Override
     public boolean removeItem(Item item) {
-       boolean isDeleted = connectSQLDB.deleteItem(item);
-       return isDeleted;
+       return connectSQLDB.deleteItem(item);
     }
 
     @Override
     public boolean setItemScore(Item item, int rating, String ssn) {
-        boolean isChanged = connectSQLDB.updateItemScore(item, rating, ssn);
-        return isChanged;
+        return connectSQLDB.updateItemScore(item, rating, ssn);
     }
 
     @Override
