@@ -15,6 +15,19 @@ import shop.View.View;
  */
 public class Shop {
 
+    public static void compareStrings(String s1, String s2) {
+        if ( s1.length() != s2.length() ) {
+            System.out.println("Length does not match...");
+        }
+        
+        for ( int i = 0; i < s1.length(); ++i ) {
+            if ( s1.charAt(i) != s2.charAt(i) ) {
+                System.out.println(String.format("Compare failed at index %d, (%c != %c)",
+                        i, s1.charAt(i), s2.charAt(i)));
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -40,6 +53,7 @@ public class Shop {
         item2.setCategory("bollar");
         item2.setScore(8);*/
         
+
         String s = new String("CREATE TABLE REGISTRATION (\n" +
 "	id INTEGER NOT NULL,\n" +
 "	first VARCHAR(255),\n" +
@@ -56,7 +70,7 @@ public class Shop {
 "	PRIMARY KEY ( id )\n" +
 "	);");
 
-        
+       
         
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        
