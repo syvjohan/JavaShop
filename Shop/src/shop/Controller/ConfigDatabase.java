@@ -36,20 +36,18 @@ public class ConfigDatabase implements ShopListener {
     }
 
     @Override
-    public void addItem(Item item, String ssn) {
-        connectSQLDB.insertItem(item, ssn);
+    public int addItem(Item item, String ssn) {
+        return connectSQLDB.insertItem(item, ssn);
     }
 
     @Override
     public boolean removeItem(Item item) {
-       boolean isDeleted = connectSQLDB.deleteItem(item);
-       return isDeleted;
+       return connectSQLDB.deleteItem(item);
     }
 
     @Override
     public boolean setItemScore(Item item, int rating, String ssn) {
-        boolean isChanged = connectSQLDB.updateItemScore(item, rating, ssn);
-        return isChanged;
+        return connectSQLDB.updateItemScore(item, rating, ssn);
     }
 
     @Override

@@ -259,9 +259,12 @@ public class ConnectSQLDB {
         }
     }
     
-    public void insertItem(Item item, String ssn) {      
+    //Returns 1 if item existed, item.amount was updated.
+    //Returns 2 if item not existed and was succesfuly added to db.
+    //Returns 0 if adding item fails.
+    public int insertItem(Item item, String ssn) {      
         try {
-                //Check if item already exist in database.
+               //Check if item already exist in database.
                rs = statement.executeQuery("SELECT Category.name, Category.ID, "
                     + "Item.name, Item.categoryID, Item.ARTICLENUMBER, Rating.ARTICLENUMBER, Rating.rate "
                     + "FROM Item "
@@ -274,11 +277,12 @@ public class ConnectSQLDB {
                    String name = rs.getString("Item.name");
                    String art = rs.getString("Item.ARTICLENUMBER");
                    if (cat.equals(item.getCategory()) && name.equals(item.getName())) {
-                        statement.executeUpdate("UPDATE Rating "
-                            + "SET Rating.rate = Rating.rate + 1 "
-                            + "WHERE Rating.ARTICLENUMBER = " + art);
+                        statement.executeUpdate("UPDATE Item " +
+                                " SET Item.amount = Item.amount + " + item.getAmount() +
+                                " WHERE Item.name = '" + item.getName() + "'" + 
+                                " AND Item.ARTICLENUMBER = '" + item.getProductId() + "'");
                        
-                        return;
+                        return 1;
                    }
                }
                
@@ -330,9 +334,13 @@ public class ConnectSQLDB {
                     + categoryID + "', " + item.getAmount() + ", " + item.getPrice() 
                     + ")");
                 
+                return 2;
+                
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return 0;
     }
     
     public void insert(String table, String[] values) {

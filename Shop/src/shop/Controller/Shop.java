@@ -22,16 +22,14 @@ public class Shop {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
         //cf.reset();
-        cf.getItem("2");
-        cf.getItems();
-        /*Item item = new Item();
-        item.setProductId(5);
-        item.setName("plankor");
+        
+        Item item = new Item();
+        item.setProductId(3);
+        item.setName("reglar");
         item.setAmount(10);
         item.setPrice((float) 100.10);
         item.setCategory("trä");
-        item.setScore(8);*/
-        //cf.addItem(item, "870610");
+        item.setScore(8);
         
         
         Item item2 = new Item();
@@ -41,8 +39,7 @@ public class Shop {
         item2.setPrice((float) 490.00);
         item2.setCategory("bollar");
         item2.setScore(8);
-        boolean i = cf.setItemScore(item2, 33, "870610-3333");
-        System.out.println(i);
+
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        
     }
