@@ -146,7 +146,7 @@ public class ConnectSQLDB {
             rs = statement.executeQuery("SELECT Item.ARTICLENUMBER, Item.name, Item.categoryID, "
                     + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
                     + "FROM Item "
-                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
+                    + "INNER JOIN Category ON Item.categoryID = Category.ID "
                     + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
             
             rs.first();
@@ -169,13 +169,67 @@ public class ConnectSQLDB {
         return item;
     }
     
-    public boolean find(String objToFind, ArrayList<String> table, String columnName) {
+    public boolean deleteItem(Item item) {
+        try {  
+            rs = statement.executeQuery("SELECT * FROM Item");
+            
+            rs.first();
+            while(rs.next()) {
+                String name = rs.getString("name");
+                int amount = rs.getInt("amount");
+                int art = rs.getInt("ARTICLENUMBER");
+                
+                if (name.equals(item.getName()) && art == item.getProductId()) {
+                    if (amount >= item.getAmount()) {
+                        statement.executeUpdate("UPDATE Item " +
+                                " SET Item.amount = Item.amount - " + item.getAmount() +
+                                " WHERE Item.name = '" + item.getName() + "'" + 
+                                " AND Item.ARTICLENUMBER = '" + item.getProductId() + "'");
+                        
+                        return true;
+                    }
+                }
+            }
+            
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+                   
+        return false;
+    }
+
+    public boolean updateItemScore(Item item, int rating, String ssn) {
+       try {  
+            rs = statement.executeQuery("SELECT Item.name, Item.ARTICLENUMBER FROM Item");
+            
+            rs.first();
+            while(rs.next()) {
+                String name = rs.getString("Item.name");
+                int artItem = rs.getInt("Item.ARTICLENUMBER");
+                
+                if (name.equals(item.getName()) && artItem == item.getProductId()) {
+                        statement.executeUpdate("INSERT INTO Rating " +
+                                "VALUES(" + item.getProductId() + ", '" + ssn + "'" +
+                                ", " + rating + ")"); 
+
+                        return true;
+                }
+            }
+            
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+                   
+        return false;
+    }
+    
+    public boolean find(String objToFind, ArrayList<String> tables, String columnName) {
         ArrayList<String> container = new ArrayList<String>();
         try {
-            for (int i = 0; i != table.size(); i++) {
-                //statement = connection.createStatement();
+            for (int i = 0; i != tables.size(); i++) {
+
                 rs = statement.executeQuery("SELECT " + columnName +
-                        " FROM " + table.get(i));
+                        " FROM " + tables.get(i));
 
                 rs.first();
                 while (rs.next()) {
@@ -205,8 +259,29 @@ public class ConnectSQLDB {
         }
     }
     
-    public boolean insertItem(Item item, String ssn) {      
+    public void insertItem(Item item, String ssn) {      
         try {
+                //Check if item already exist in database.
+               rs = statement.executeQuery("SELECT Category.name, Category.ID, "
+                    + "Item.name, Item.categoryID, Item.ARTICLENUMBER, Rating.ARTICLENUMBER, Rating.rate "
+                    + "FROM Item "
+                    + "INNER JOIN Category ON Item.categoryID = Category.ID "
+                    + "INNER JOIN Rating ON Item.ARTICLENUMBER = Rating.ARTICLENUMBER");
+               
+               rs.first();
+               while (rs.next()) {
+                   String cat = rs.getString("Category.name");
+                   String name = rs.getString("Item.name");
+                   String art = rs.getString("Item.ARTICLENUMBER");
+                   if (cat.equals(item.getCategory()) && name.equals(item.getName())) {
+                        statement.executeUpdate("UPDATE Rating "
+                            + "SET Rating.rate = Rating.rate + 1 "
+                            + "WHERE Rating.ARTICLENUMBER = " + art);
+                       
+                        return;
+                   }
+               }
+               
                 //Insert Rating.
                 statement.executeUpdate("INSERT INTO Rating "
                     + "VALUES ('" + item.getProductId() + "', '" +
@@ -252,15 +327,12 @@ public class ConnectSQLDB {
                 
                 statement.executeUpdate("INSERT INTO Item (name, categoryID, amount, price) "
                     + "VALUES ('" + item.getName() + "', '"
-                    + categoryID + "', " + item.getAmount() + ", " + item.getPrice()
+                    + categoryID + "', " + item.getAmount() + ", " + item.getPrice() 
                     + ")");
                 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        
-        return true;
     }
     
     public void insert(String table, String[] values) {

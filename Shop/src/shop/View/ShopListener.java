@@ -18,10 +18,10 @@ public interface ShopListener {
     public abstract void addItem(Item item, String ssn);
     
     // Remove 1 or more items.
-    public abstract void removeItem(Item item);
+    public abstract boolean removeItem(Item item);
     
     // Update the score of an item.
-    public abstract void setItemScore(Item item, int score);
+    public abstract boolean setItemScore(Item item, int score, String ssn);
     
     // Return the user level
     // 0 : FAILED
