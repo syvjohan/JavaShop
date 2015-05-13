@@ -62,11 +62,6 @@ public class SQLHelper {
 
         return queries;
     }
-    
-    public void doTableExist(String table) {
-        String query = "SELECT 1 FROM" + table +
-                "LIMIT 1";
-    }
 
     @Override
     public boolean equals(Object rhs) {

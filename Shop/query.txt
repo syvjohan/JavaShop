@@ -1,63 +1,15 @@
-﻿CREATE TABLE Category (
-	ID INT NOT NULL,
-	name VARCHAR(50),
-	PRIMARY KEY (ID)
-);
- 
-CREATE TABLE Item (
-	ID INT NOT NULL,
-	name VARCHAR(50),
-	categoryID INT,
-	amount INT(50),
-	price DECIMAL(18, 2),
-	PRIMARY KEY (ID)
-);
+﻿CREATE TABLE REGISTRATION (
+	id INTEGER NOT NULL,
+	first VARCHAR(255),
+	last VARCHAR(255),
+	age INTEGER,
+	PRIMARY KEY ( id )
+    );
 
-CREATE TABLE Person (
-	PERSONALNUMBER VARCHAR(50) NOT NULL,
-	name VARCHAR(50),
-	street VARCHAR(100),
-	postnumber VARCHAR(100),
-	PRIMARY KEY (PERSONALNUMBER)
-);
-
-CREATE TABLE Customer (
-	PERSONALNUMBER VARCHAR(50) NOT NULL,
-	username VARCHAR(50),
-	password VARCHAR(50),
-	PRIMARY KEY (PERSONALNUMBER)
-);
-
-CREATE TABLE Staff (
-	PERSONALNUMBER VARCHAR(50) NOT NULL,
-	username VARCHAR(50),
-	password VARCHAR(50),
-	PRIMARY KEY (PERSONALNUMBER)
-);
-
-
-CREATE TABLE Phone (
-	PERSONALNUMBER VARCHAR(50) NOT NULL,
-	phonenumber BIGINT,
-	PRIMARY KEY (PERSONALNUMBER)
-);
-
-CREATE TABLE Rating (
-	ID INT NOT NULL,
-	personalnumber VARCHAR(50) NOT NULL,
-	rate INT
-);
-
-INSERT INTO Staff VALUES ('9912120000', 'TestUser', 'testpassword');
-INSERT INTO Person VALUES ('9912120000', 'John Doe', 'Testvägen 0', '12345');
-
-INSERT INTO Item (name, categoryID, amount, price) VALUES ('lera', 1, 4, 10.00);
-INSERT INTO Item (name, categoryID, amount, price) VALUES ('fotboll', 2, 10, 490.00);
-
-INSERT INTO Category (name) VALUES ('form');
-INSERT INTO Category (name) VALUES ('bollar');
-
-INSERT INTO Rating VALUES (1, '871010-6666', 5);
-INSERT INTO Rating VALUES (2, '841019-6666', 1);
-INSERT INTO Rating VALUES (1, '891110-1132', 5);
-INSERT INTO Rating VALUES (2, '741019-6999', 8);
+﻿CREATE TABLE REGISTRATION (
+	id INTEGER NOT NULL,     
+	first VARCHAR(255),      
+	last VARCHAR(255),      
+	age INTEGER,      
+	PRIMARY KEY ( id )      
+	);

@@ -65,7 +65,7 @@ public class ConnectSQLDB {
         return false;
     }
     
-    private void cleanUp() {
+    /*private void cleanUp() {
         try {
             rs.close();
             statement.close();
@@ -73,7 +73,7 @@ public class ConnectSQLDB {
         } catch (SQLException err) {
             err.printStackTrace();
         }  
-    }
+    }*/
   
     public ArrayList<Item> getAllItems() {
         ArrayList<Item> container = new ArrayList<>();
@@ -253,7 +253,7 @@ public class ConnectSQLDB {
     public void insert(ArrayList<String> querys) {
         try {
             for (int i = 0; i != querys.size(); i++) {
-                statement.executeUpdate(querys.get(i));
+               rs = statement.executeQuery(querys.get(i));
             }
         } catch (SQLException err) {
             err.printStackTrace();

@@ -21,7 +21,7 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        cf.reset();
+        //cf.reset();
         
         /*Item item = new Item();
         item.setProductId(3);
@@ -39,10 +39,27 @@ public class Shop {
         item2.setPrice((float) 490.00);
         item2.setCategory("bollar");
         item2.setScore(8);*/
-        cf.getItems();
+        
+        String s = new String("CREATE TABLE REGISTRATION (\n" +
+"	id INTEGER NOT NULL,\n" +
+"	first VARCHAR(255),\n" +
+"	last VARCHAR(255),\n" +
+"	age INTEGER,\n" +
+"	PRIMARY KEY ( id )\n" +
+"       );");
+        
+        String k = new String("CREATE TABLE REGISTRATION (\n" +
+"	id INTEGER NOT NULL,\n" +
+"	first VARCHAR(255),\n" +
+"	last VARCHAR(255),\n" +
+"	age INTEGER,\n" +
+"	PRIMARY KEY ( id )\n" +
+"	);");
 
+        
+        
         // Send in your controller implementing the ShopListener interface.
-        View view = new View(cf);        
+        //View view = new View(cf);        
     }
     
 }
