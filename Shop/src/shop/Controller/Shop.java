@@ -53,24 +53,11 @@ public class Shop {
         item2.setCategory("bollar");
         item2.setScore(8);*/
         
-
-        String s = new String("CREATE TABLE REGISTRATION (\n" +
-"	id INTEGER NOT NULL,\n" +
-"	first VARCHAR(255),\n" +
-"	last VARCHAR(255),\n" +
-"	age INTEGER,\n" +
-"	PRIMARY KEY ( id )\n" +
-"       );");
+        String s = new String("﻿CREATE TABLE REGISTRATION (id INTEGER NOT NULL,first VARCHAR(255),last VARCHAR(255),age INTEGER,PRIMARY KEY ( id )    );");
         
-        String k = new String("CREATE TABLE REGISTRATION (\n" +
-"	id INTEGER NOT NULL,\n" +
-"	first VARCHAR(255),\n" +
-"	last VARCHAR(255),\n" +
-"	age INTEGER,\n" +
-"	PRIMARY KEY ( id )\n" +
-"	);");
+        String k = new String("﻿CREATE TABLE REGISTRATION (id INTEGER NOT NULL,first VARCHAR(255),last VARCHAR(255),age INTEGER,PRIMARY KEY ( id )    );");
 
-       
+        compareStrings(s, k);
         
         // Send in your controller implementing the ShopListener interface.
         //View view = new View(cf);        
