@@ -85,7 +85,7 @@ public class ConnectSQLDB {
                     + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
                     + "INNER JOIN Rating ON Item.ID = Rating.ID");
             
-            rs.first();
+            
             while (rs.next()) {
                 Item item = new Item();
                 item.setProductId(rs.getInt("Item.ID"));
@@ -93,7 +93,7 @@ public class ConnectSQLDB {
                 item.setCategory(rs.getString("Category.name"));
                 item.setAmount(rs.getInt("Item.amount"));
                 item.setPrice(rs.getFloat("Item.price"));
-                item.setScore(rs.getInt("Rating.rate"));
+                item.setScore(rs.getFloat("Rating.rate"));
                 
                 container.add(item);
             }                   
@@ -102,7 +102,7 @@ public class ConnectSQLDB {
             e.printStackTrace();
         }
         
-        return container;
+        return calculateAverageRating(container);
     }
  
     public boolean matchDBAndValues(Map<String, String> container, String value1, String value2) {
@@ -125,7 +125,6 @@ public class ConnectSQLDB {
                         columnName2 +
                             " FROM " + table);
               
-                //rs.first();
                 while(rs.next()) {
                     String user = rs.getString(columnName1); 
                     String pwd = rs.getString(columnName2);
@@ -150,7 +149,6 @@ public class ConnectSQLDB {
                     + "INNER JOIN Category ON Item.categoryID = Category.ID "
                     + "INNER JOIN Rating ON Item.ID= Rating.ID");
             
-            rs.first();
             while (rs.next()) {
                 if (obj.equals(rs.getInt("Item.ID"))) {
                     item.setProductId(rs.getInt("Item.ID"));
@@ -158,7 +156,7 @@ public class ConnectSQLDB {
                     item.setCategory(rs.getString("Category.name"));
                     item.setAmount(rs.getInt("Item.amount"));
                     item.setPrice(rs.getFloat("Item.price"));
-                    item.setScore(rs.getInt("Rating.rate"));
+                    item.setScore(rs.getFloat("Rating.rate"));
                     return item;
                 }  
             }
@@ -174,7 +172,6 @@ public class ConnectSQLDB {
         try {  
             rs = statement.executeQuery("SELECT * FROM Item");
             
-            rs.first();
             while(rs.next()) {
                 String name = rs.getString("name");
                 int amount = rs.getInt("amount");
@@ -203,7 +200,6 @@ public class ConnectSQLDB {
        try {  
             rs = statement.executeQuery("SELECT Item.name, Item.ID FROM Item");
             
-            rs.first();
             while(rs.next()) {
                 String name = rs.getString("Item.name");
                 int artItem = rs.getInt("Item.ID");
@@ -272,7 +268,6 @@ public class ConnectSQLDB {
                     + "INNER JOIN Category ON Item.categoryID = Category.ID "
                     + "INNER JOIN Rating ON Item.ID = Rating.ID");
                
-               rs.first();
                while (rs.next()) {
                    String cat = rs.getString("Category.name");
                    String name = rs.getString("Item.name");
@@ -403,6 +398,25 @@ public class ConnectSQLDB {
         }
         
         return container;
+    }
+    
+    public ArrayList<Item> calculateAverageRating(ArrayList<Item> items) {       
+        for (int i = 0; i != items.size(); i++) {
+            for (int k = items.size() -1; k != i; k--) {
+                if (items.get(i).getCategory().equals(items.get(k).getCategory()) &&
+                        items.get(i).getName().equals(items.get(k).getName())) 
+                {
+                    float score = items.get(i).getScore() + items.get(k).getScore();
+                    score = score/2;
+                    items.get(i).setScore(score);
+                    score = 0;
+                    
+                    items.remove(k);
+                }
+            }
+        }
+      
+        return items;
     }
     
     @Override

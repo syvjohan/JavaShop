@@ -70,7 +70,7 @@ public class ConfigDatabase implements ShopListener {
         if (match) {
             return 2;
         }
-        System.out.println(match);
+
         container.clear();
         container = connectSQLDB.getValues("username", "password", "Customer");
         match = connectSQLDB.matchDBAndValues(container, userName, password);
@@ -78,7 +78,6 @@ public class ConfigDatabase implements ShopListener {
         if (match) {
             return 1;
         }
-        System.out.println(match);
         //wrong username and password.     
         return 0;
     }

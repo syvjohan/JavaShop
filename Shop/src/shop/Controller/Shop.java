@@ -53,6 +53,8 @@ public class Shop {
         item2.setCategory("bollar");
         item2.setScore(8);*/
         
+        //cf.login("testcustomer", "pwdcustomer");
+        
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
 

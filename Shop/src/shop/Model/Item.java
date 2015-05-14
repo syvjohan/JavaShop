@@ -18,7 +18,7 @@ public class Item {
     private float price;
     private String name;
     private String category;
-    private int score;
+    private float score;
     private int productId;
     
     public Item()
@@ -97,14 +97,14 @@ public class Item {
     /**
      * @return the score
      */
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
     /**
      * @param score the score to set
      */
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 
