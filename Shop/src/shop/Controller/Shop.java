@@ -55,6 +55,7 @@ public class Shop {
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
+
     }
     
 }

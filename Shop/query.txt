@@ -35,7 +35,6 @@ CREATE TABLE Staff (
 	PRIMARY KEY (PERSONALNUMBER)
 );
 
-
 CREATE TABLE Phone (
 	PERSONALNUMBER VARCHAR(50) NOT NULL,
 	phonenumber BIGINT,
@@ -48,8 +47,17 @@ CREATE TABLE Rating (
 	rate INT
 );
 
-INSERT INTO Staff VALUES ('9912120000', 'TestUser', 'testpassword');
-INSERT INTO Person VALUES ('9912120000', 'John Doe', 'Testvägen 0', '12345');
+INSERT INTO Staff VALUES ('19661006-1234', 'teststaff', 'pwdstaff');
+INSERT INTO Staff VALUES ('19880306-4568', 'teststaff2', 'pwdstaff2');
+
+INSERT INTO Customer VALUES ('19661006-1234', 'testcustomer', 'pwdcustomer');
+INSERT INTO Customer VALUES ('17770613-4321', 'testcustomer2', 'pwdcustomer2');
+
+INSERT INTO Person VALUES ('19880306-4568', 'John Doe', 'Testvägen 0', '12345');
+INSERT INTO Person VALUES ('19661006-1234', 'Rasmus mose', 'Testvägen 666', '67890');
+
+INSERT INTO Person VALUES ('17770613-4321', 'Gabriel kvist', 'ladugårdsvägen 10', '45672');
+INSERT INTO Person VALUES ('11661208-1987', 'Moses Abrahamsson', 'ökenvägen 6f', '45876');
 
 INSERT INTO Item (ID, name, categoryID, amount, price) VALUES (1, 'lera', 1, 4, 10.00);
 INSERT INTO Item (ID, name, categoryID, amount, price) VALUES (2, 'fotboll', 2, 10, 490.00);

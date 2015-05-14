@@ -121,16 +121,15 @@ public class ConnectSQLDB {
         Map<String, String> container = new HashMap<String, String>();
      
         try {
-                rs = statement.executeQuery("SELECT " + columnName1 + "," +
+                rs = statement.executeQuery("SELECT " + columnName1 + ", " +
                         columnName2 +
                             " FROM " + table);
               
-                rs.first();
+                //rs.first();
                 while(rs.next()) {
                     String user = rs.getString(columnName1); 
                     String pwd = rs.getString(columnName2);
                     container.put(user, pwd);
-
                 }
 
         } catch (SQLException e) {
