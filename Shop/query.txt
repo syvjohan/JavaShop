@@ -44,7 +44,7 @@ CREATE TABLE Phone (
 CREATE TABLE Rating (
 	ID INT NOT NULL,
 	personalnumber VARCHAR(50) NOT NULL,
-	rate DECIMAL(15, 2)
+	rate DECIMAL(18, 2)
 );
 
 INSERT INTO Staff VALUES ('19661006-1234', 'teststaff', 'pwdstaff');
