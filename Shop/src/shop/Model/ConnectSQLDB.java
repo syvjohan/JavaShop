@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import shop.Controller.Shop;
 
 
 /**
@@ -253,7 +254,7 @@ public class ConnectSQLDB {
     public void insert(ArrayList<String> querys) {
         try {
             for (int i = 0; i != querys.size(); i++) {
-               rs = statement.executeQuery(querys.get(i));
+               statement.executeUpdate(querys.get(i));
             }
         } catch (SQLException err) {
             err.printStackTrace();

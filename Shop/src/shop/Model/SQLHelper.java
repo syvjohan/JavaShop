@@ -26,7 +26,7 @@ public class SQLHelper {
 
     public static ArrayList<String> setDefaultSQLQueries(String path) {
         ArrayList<String> queries = new ArrayList();
-        
+        boolean flag = false;
         File file = new File(path);
         FileReader reader;
         try {
@@ -50,7 +50,11 @@ public class SQLHelper {
                 builder.append(c);
 
                 if (c == ';')
-                {
+                {   
+                    if (!flag){
+                        builder.deleteCharAt(0);
+                        flag = true;
+                    }
                     queries.add(builder.toString());
                     builder = new StringBuilder();
                 }

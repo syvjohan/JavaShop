@@ -23,7 +23,7 @@ public class Shop {
         for ( int i = 0; i < s1.length(); ++i ) {
             if ( s1.charAt(i) != s2.charAt(i) ) {
                 System.out.println(String.format("Compare failed at index %d, (%c != %c)",
-                        i, s1.charAt(i), s2.charAt(i)));
+                        i, s1.charAt(i), s2.charAt(i))); 
             }
         }
     }
@@ -34,7 +34,7 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        //cf.reset();
+        cf.reset();
         
         /*Item item = new Item();
         item.setProductId(3);
@@ -53,14 +53,8 @@ public class Shop {
         item2.setCategory("bollar");
         item2.setScore(8);*/
         
-        String s = new String("﻿CREATE TABLE REGISTRATION (id INTEGER NOT NULL,first VARCHAR(255),last VARCHAR(255),age INTEGER,PRIMARY KEY ( id )    );");
-        
-        String k = new String("﻿CREATE TABLE REGISTRATION (id INTEGER NOT NULL,first VARCHAR(255),last VARCHAR(255),age INTEGER,PRIMARY KEY ( id )    );");
-
-        compareStrings(s, k);
-        
         // Send in your controller implementing the ShopListener interface.
-        //View view = new View(cf);        
+        View view = new View(cf);        
     }
     
 }
