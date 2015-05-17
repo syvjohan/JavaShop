@@ -305,9 +305,10 @@ public class ConnectSQLDB {
                 }      
                 //If name dont exist.
                 if (categoryID == -1) {
-                    statement.executeUpdate("INSERT INTO Category (name) "
-                            + "VALUES ('" + item.getCategory() + "')");
-
+                    statement.executeUpdate("INSERT INTO Category "
+                            + "VALUES (" + item.getProductId() + ",' " + item.getCategory() + "')");
+                    
+                    /*
                     //Get category id.
                     rs = statement.executeQuery("SELECT * FROM Category ");  
 
@@ -318,6 +319,8 @@ public class ConnectSQLDB {
                             categoryID = tmpID;
                         }
                     }
+                            */
+                    categoryID = item.getProductId();
                 }
                 
                 statement.executeUpdate("INSERT INTO Item (name, categoryID, amount, price) "
@@ -334,6 +337,7 @@ public class ConnectSQLDB {
         return 0;
     }
     
+    //TODO kontrollera om användarnamn finns...
     public void insert(String table, String[] values) {
         
         StringBuilder builder = new StringBuilder();

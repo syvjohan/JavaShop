@@ -36,7 +36,7 @@ public class Shop {
         ConfigDatabase cf = new ConfigDatabase();
         cf.reset();
         
-        /*Item item = new Item();
+        Item item = new Item();
         item.setProductId(3);
         item.setName("reglar");
         item.setAmount(10);
@@ -51,9 +51,11 @@ public class Shop {
         item2.setAmount(1);
         item2.setPrice((float) 490.00);
         item2.setCategory("bollar");
-        item2.setScore(8);*/
+        item2.setScore(8);
         
         //cf.login("testcustomer", "pwdcustomer");
+        cf.addItem(item);
+        cf.addItem(item2);
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
