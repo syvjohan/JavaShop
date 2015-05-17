@@ -333,7 +333,6 @@ public class ConnectSQLDB {
         return 0;
     }
     
-    //TODO kontrollera om användarnamn finns...
     public void insert(String table, String[] values) {
         
         StringBuilder builder = new StringBuilder();
