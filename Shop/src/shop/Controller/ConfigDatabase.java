@@ -147,4 +147,9 @@ public class ConfigDatabase implements ShopListener {
     public boolean updateItem(Item item) {
         return false;
     }
+    
+    @Override
+     public String getUserSSN(String username) {
+         return username;
+     }
 }

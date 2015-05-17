@@ -5,7 +5,6 @@
  */
 package shop.Model;
 
-import com.sun.corba.se.spi.ior.IdentifiableContainerBase;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
