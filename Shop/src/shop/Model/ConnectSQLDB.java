@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import shop.Controller.Shop;
-
 
 /**
  *
@@ -227,7 +225,6 @@ public class ConnectSQLDB {
                 rs = statement.executeQuery("SELECT " + columnName +
                         " FROM " + tables.get(i));
 
-                rs.first();
                 while (rs.next()) {
                     String value = rs.getString(columnName);
                     container.add(value);

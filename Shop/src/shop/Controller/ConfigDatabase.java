@@ -92,7 +92,7 @@ public class ConfigDatabase implements ShopListener {
         tables.add("Customer");
         tables.add("staff");
         //Check if the user already exists.
-        boolean isFound = connectSQLDB.find(ssn, tables, "PERSONALNUMBER");
+        boolean isFound = connectSQLDB.find(userName, tables, "username");
         if (!isFound) {
             StringBuilder builder = new StringBuilder();
 

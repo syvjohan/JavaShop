@@ -54,8 +54,9 @@ public class Shop {
         item2.setScore(8);
         
         //cf.login("testcustomer", "pwdcustomer");
-        cf.addItem(item);
-        cf.addItem(item2);
+        //cf.addItem(item);
+        //cf.addItem(item2);
+        //cf.register(2, "testcustome", "johantest", "johan", "Berguvsgatan", "21559", "870610-3333"); 
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
