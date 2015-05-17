@@ -47,4 +47,6 @@ public interface ShopListener {
     
     //Creates a unique productId
     public abstract int getNewID();
+    
+    public abstract String getUserSSN(String username);
 }

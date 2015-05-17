@@ -80,9 +80,9 @@ public class ProductPanel extends JPanel {
     
     public void clearItems()
     {
-        for(Component c : getComponents())
-        {
-            remove(c);
+        for(ItemPanel pnl : items) {
+            
+            remove(pnl);
         }
     }
 }
