@@ -25,10 +25,12 @@ public class EmployeePanel extends SidePanel {
     
     private ShopListener listener;
     private Item currentItem;
+    private View view;
     
-    public EmployeePanel(ShopListener listener) {
+    public EmployeePanel(View view, ShopListener listener) {
         setBackground(Color.GRAY);
         this.listener = listener;
+        this.view = view;
         initGUI();
         
         btnUpdate.addActionListener((ActionEvent e)-> {
@@ -46,6 +48,7 @@ public class EmployeePanel extends SidePanel {
             }
             
             listener.updateItem(item);            
+            view.update();
         });
         
         btnAdd.addActionListener((ActionEvent e)-> {
@@ -62,7 +65,10 @@ public class EmployeePanel extends SidePanel {
                 return;
             }
             
+            item.setProductId(listener.getNewID());
+            
             listener.addItem(item);
+            view.update();
         });
     }
     

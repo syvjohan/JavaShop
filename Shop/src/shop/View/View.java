@@ -73,22 +73,7 @@ public class View extends JFrame
                 
         setSidePanel(new AnonPanel());
         
-        Item items[] = listener.getItems();
-        
-        // Listener for the product panel
-        // Depends on the current side panel.
-        productPanel = new ProductPanel((Item i)-> {
-            if ( sidePanel instanceof EmployeePanel ) {
-                ((EmployeePanel)sidePanel).editItem(i);
-            } else if ( sidePanel instanceof CustomerPanel ) {
-                ((CustomerPanel)sidePanel).addItemToCart(i);
-            }
-        });
-        
-        for (Item i : items)
-        {
-            productPanel.addItem(i);
-        }
+        update();
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -99,9 +84,7 @@ public class View extends JFrame
         gbc.gridwidth = 1;
         gbc.weightx = 0.8f;
         gbc.fill = GridBagConstraints.BOTH;
-        
 
-        add(productPanel, gbc);
         
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
@@ -138,27 +121,31 @@ public class View extends JFrame
         
         setSize(new Dimension(640, 480));
         setVisible(true);
+        setUserLevel("Peter", 2);
     }
     
     private void doLogin()
-    {
-        setUserLevel("Peter", 2);
-        return;
-        
-//        JTextField tfUser = new JTextField();
-//        JTextField tfPassword = new JTextField();
-//        JComponent comps[] = new JComponent[]{
-//           new JLabel("Username"),
-//           tfUser,
-//           new JLabel("Password"),
-//           tfPassword             
-//        };
-//            
-//        JOptionPane.showMessageDialog(null, comps, "Login", JOptionPane.OK_CANCEL_OPTION);           
-//        if (listener != null)
-//        {
-//            setUserLevel(tfUser.getText(), listener.login(tfUser.getText(), tfPassword.getText()));    
-//        }
+    {       
+        JTextField tfUser = new JTextField();
+        JTextField tfPassword = new JTextField();
+        JComponent comps[] = new JComponent[]{
+           new JLabel("Username"),
+           tfUser,
+           new JLabel("Password"),
+           tfPassword             
+        };
+            
+        JOptionPane.showMessageDialog(null, comps, "Login", JOptionPane.OK_CANCEL_OPTION);           
+        if (listener != null)
+        {
+            int level = listener.login(tfUser.getText(), tfPassword.getText());
+            
+            if (level > 0) {
+                setUserLevel(tfUser.getText(), level);
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid Username or password");
+            }
+        }
     }
     
     private void doRegister()
@@ -216,16 +203,51 @@ public class View extends JFrame
                 setSidePanel(new AnonPanel());
                 break;
             case 1:
-                cpnl = new CustomerPanel();
+                cpnl = new CustomerPanel(listener);
                 cpnl.setUser(user);
-                setSidePanel(cpnl);
-                
+                setSidePanel(cpnl);     
                 break;
             case 2:
-                epnl = new EmployeePanel(listener);
+                epnl = new EmployeePanel(this, listener);
                 epnl.setUser(user);
                 setSidePanel(epnl);
                 break;
         }
+    }
+    
+    public void update() {
+        
+        if (productPanel == null) {
+            // Listener for the product panel
+            // Depends on the current side panel.
+            productPanel = new ProductPanel((Item i)-> {
+                if ( sidePanel instanceof EmployeePanel ) {
+                    ((EmployeePanel)sidePanel).editItem(i);
+                } else if ( sidePanel instanceof CustomerPanel ) {
+                    ((CustomerPanel)sidePanel).addItemToCart(i);
+                }
+            });
+            
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            gbc.gridx = 1;
+            gbc.gridwidth = 1;
+            gbc.weightx = 0.8f;
+            gbc.fill = GridBagConstraints.BOTH;
+
+            add(productPanel, gbc);
+        }
+        
+        productPanel.clearItems();
+        
+        Item items[] = listener.getItems();
+        for (Item i : items)
+        {
+            productPanel.addItem(i);
+        }
+        
     }
 }

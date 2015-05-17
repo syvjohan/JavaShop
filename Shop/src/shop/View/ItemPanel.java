@@ -53,7 +53,9 @@ public class ItemPanel extends JPanel {
         add(btnAddToCart, gbc);
         btnAddToCart.addActionListener((ActionEvent e) -> {
             if (listener != null) {
-                listener.onItem(item);
+                Item i = item.makeGenericCopy();
+                i.setAmount(1);
+                listener.onItem(i);
             }
         });
         

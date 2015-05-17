@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListModel;
@@ -35,9 +36,12 @@ public class CustomerPanel extends SidePanel {
     private ArrayList<Item> cart = new ArrayList<Item>();
     private JLabel lblUser = new JLabel();
     private JScrollPane scroll = new JScrollPane(taItems);
+    private ShopListener listener;
+    private String userName;
     
-    public CustomerPanel()
+    public CustomerPanel(ShopListener listener)
     {
+        this.listener = listener;
         //setBackground(Color.YELLOW);
         initGUI();
     }
@@ -72,6 +76,36 @@ public class CustomerPanel extends SidePanel {
         gbc.weightx = 0.5f;
         add(btnCheckout, gbc);
         
+        btnCheckout.addActionListener((ActionEvent e) -> {
+            boolean result = JOptionPane.showConfirmDialog(null,
+                    "Would you like to rate the items?") == JOptionPane.OK_OPTION;
+            
+            if (result) {
+                String ssn = listener.getUserSSN(userName);
+                
+                boolean rated = false;
+                for(Item i : cart) {
+                    int rating = 0;
+                    do
+                    {                   
+                        String str = JOptionPane.showInputDialog(null, String.format("Rate %s (1-5)"));
+                        try {
+                            rating = Integer.parseInt(str);
+                            if (rating < 1 || rating > 5) {
+                                throw new NumberFormatException();
+                            }                            
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a number from 1-5");
+                            continue;
+                        }
+                        rated = true;
+                    } while(!rated);
+                    
+                    listener.setItemScore(i, rating, ssn);                    
+                }                
+            }            
+        });
+        
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.weightx = 1.0f;
@@ -83,6 +117,7 @@ public class CustomerPanel extends SidePanel {
     public void setUser(String username)
     {
         lblUser.setText(String.format("Inloggad: (%s)", username));
+        userName = username;
     }
     
     public void addItemToCart(Item item)
