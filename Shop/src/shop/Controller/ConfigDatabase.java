@@ -134,7 +134,11 @@ public class ConfigDatabase implements ShopListener {
     
     @Override
     public boolean updateItem(Item item) {
-        return connectSQLDB.updateItem(item);
+        int succesful = connectSQLDB.insertItem(item);
+        if (succesful == 1) {
+            return true;
+        }
+        return false;
     }
     
     @Override
@@ -149,3 +153,12 @@ public class ConfigDatabase implements ShopListener {
 //Välja vilka varor som ska visas efter kategori
 //Lägga in en ny person.
 //SQL för att hämta all personal
+//Logga ut
+
+
+//Peter behöver:
+//En klass som hetter person (get set metoder) inkl username.
+//En funktion som returnerar alla personer (anställda och kunder)
+//En funktion för att ta bort en användar (arg username) samt ta bort ett item (arg item) bägge retunerar bool.
+//Updaterar en person (arg person).
+//Uppdaterar ett item (arg item)

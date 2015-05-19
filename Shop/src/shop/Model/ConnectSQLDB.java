@@ -358,11 +358,7 @@ public class ConnectSQLDB {
         
         return 0;
     }
-    
-    public boolean updateItem(Item item) {
-        return true;
-    }
-    
+   
     public void insert(String table, String[] values) {
         
         StringBuilder builder = new StringBuilder();
