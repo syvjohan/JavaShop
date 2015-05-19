@@ -248,6 +248,6 @@ public class View extends JFrame
         {
             productPanel.addItem(i);
         }
-        
+
     }
 }

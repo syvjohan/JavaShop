@@ -5,6 +5,7 @@
  */
 package shop.Model;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -73,33 +74,106 @@ public class ConnectSQLDB {
             err.printStackTrace();
         }  
     }*/
-  
-    public ArrayList<Item> getAllItems() {
-        ArrayList<Item> container = new ArrayList<>();
+    
+    private ArrayList<Score> getAllRatings() {
+        ArrayList<Score> container = new ArrayList<>();
+     
         try {
-            rs = statement.executeQuery("SELECT Item.ID, Item.name, Item.categoryID, "
-                    + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
-                    + "FROM Item "
-                    + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ID = Rating.ID");
+            rs = statement.executeQuery("SELECT * FROM Rating");
             
             while (rs.next()) {
-                Item item = new Item();
-                item.setProductId(rs.getInt("Item.ID"));
-                item.setName(rs.getString("Item.name"));
-                item.setCategory(rs.getString("Category.name"));
-                item.setAmount(rs.getInt("Item.amount"));
-                item.setPrice(rs.getFloat("Item.price"));
-                item.setScore(rs.getFloat("Rating.rate"));
-                
-                container.add(item);
-            }                   
+                Score score = new Score();
+                score.setID(rs.getInt("ID"));
+                score.setRate(rs.getFloat("rate"));
+                score.setSsn(rs.getString("personalnumber"));
+                container.add(score);
+            }
+            
+            for (int i = 0; i != container.size(); i++) {
+                for (int k = container.size() -1; k != i; k--) {
+                     if (container.get(i).getID() == container.get(k).getID()) {
 
+                        container.get(i).setRate((container.get(i).getRate() + container.get(k).getRate()) / 2);
+                        container.get(i).setSsn("null");
+
+                        container.get(k).setID(-1);
+                        container.get(k).setRate(0f);
+                        container.get(k).setSsn("null");
+                        
+                    }
+                }   
+            }
+            
+            //Remove irregular numbers
+            for (int i = container.size() -1; i >= 0; i--) {
+                if (container.get(i).getID() == -1) {
+                    container.remove(i);
+                }
+            }
+           
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        return calculateAverageRating(container);
+        return container;
+    }
+    
+    private ArrayList<Item> matchItemWithRating(ArrayList<Item> items, ArrayList<Score> ratings) {
+        ArrayList<Item> container = new ArrayList<>();
+        
+        for (int s = 0; s < ratings.size(); s++) {
+            for (int k = 0; k < ratings.size(); k++) {
+                if (ratings.get(s).getID() == items.get(k).getProductId()) {
+                    
+                    Item item = new Item();
+                    item = items.get(k);
+                    items.get(k).setScore(ratings.get(s).getRate());
+                    container.add(item);
+                } 
+            }
+        }
+        
+        //No score has been set.
+        for (int i = 0; i != items.size(); i++) {
+            if (!container.contains(items.get(i).getProductId())) {
+                if (items.get(i).getScore() == 0) {
+                    Item item = new Item();
+                    item = items.get(i);
+                    container.add(item);
+                }
+            }
+        }
+        
+        return container;
+    }
+  
+    public ArrayList<Item> getAllItems() {
+        ArrayList<Item> container = new ArrayList<>();
+        try {
+            rs = statement.executeQuery("SELECT Item.ID, Item.name, Item.categoryID,"
+                    + " Item.amount, Item.price, Category.name, Category.ID "
+                    + " FROM Item "
+                    + " INNER JOIN Category ON Item.categoryID = Category.ID ");
+            
+            while (rs.next()) {
+                    Item item = new Item();
+                    item.setProductId(rs.getInt("Item.ID"));
+                    item.setName(rs.getString("Item.name"));
+                    item.setCategory(rs.getString("Category.name"));
+                    item.setAmount(rs.getInt("Item.amount"));
+                    item.setPrice(rs.getFloat("Item.price"));
+                    item.setScore(0);
+
+                    container.add(item);
+            }  
+            
+            if (container.isEmpty()) return container;  
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return matchItemWithRating(container, getAllRatings());
     }
  
     public boolean matchDBAndValues(Map<String, String> container, String value1, String value2) {
@@ -272,11 +346,11 @@ public class ConnectSQLDB {
                    if (category.equals(item.getCategory()) && name.equals(item.getName())) {
                        if (price == item.getPrice()) {
                            //if Item exist, ++amount and calculate rating.
-                        statement.executeUpdate("UPDATE Item " +
-                                    " SET Item.amount = Item.amount + " + item.getAmount() +
-                                    " WHERE Item.name = '" + item.getName() + "'" + 
-                                    " AND '" + category + "' = '" + item.getCategory() + "'");
-                        return 1;
+                            statement.executeUpdate("UPDATE Item " +
+                                        " SET Item.amount = Item.amount + " + item.getAmount() +
+                                        " WHERE Item.name = '" + item.getName() + "'" + 
+                                        " AND '" + category + "' = '" + item.getCategory() + "'");
+                            return 1;
                        }
                        else {
                            return 3;
@@ -388,23 +462,6 @@ public class ConnectSQLDB {
        } while (container.contains(indexID));
        
         return indexID;
-    }
-    
-    public ArrayList<Item> calculateAverageRating(ArrayList<Item> items) {       
-        for (int i = 0; i != items.size(); i++) {
-            for (int k = items.size() -1; k != i; k--) {
-                if (items.get(i).getProductId() == items.get(k).getProductId()) {
-                    float score = items.get(i).getScore() + items.get(k).getScore();
-                    score = score/2;
-                    items.get(i).setScore(score);
-                    score = 0;
-                    
-                    items.remove(k);
-                }
-            }
-        }
-      
-        return items;
     }
     
     @Override
