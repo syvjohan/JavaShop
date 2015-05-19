@@ -88,7 +88,7 @@ public class CustomerPanel extends SidePanel {
                     int rating = 0;
                     do
                     {                   
-                        String str = JOptionPane.showInputDialog(null, String.format("Rate %s (1-5)"));
+                        String str = JOptionPane.showInputDialog(null, String.format("Rate %s (1-5)", i.getName()));
                         try {
                             rating = Integer.parseInt(str);
                             if (rating < 1 || rating > 5) {
