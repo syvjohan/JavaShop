@@ -78,11 +78,9 @@ public class ProductPanel extends JPanel {
         }
     }
     
-    public void clearItems()
-    {
+    public void clearItems() {
         for(ItemPanel pnl : items) {
-            
-            remove(pnl);
+            panel.remove(pnl);
         }
     }
 }

@@ -23,6 +23,7 @@ public class ItemPanel extends JPanel {
     private JLabel lblItemName = new JLabel();
     private JLabel lblItemStock = new JLabel();
     private JLabel lblItemPrice = new JLabel();
+    private JLabel lblScore = new JLabel();
     private JButton btnAddToCart = new JButton("Buy");
     private ItemListener listener;
     
@@ -48,6 +49,9 @@ public class ItemPanel extends JPanel {
         gbc.gridx = 2;
         add(lblItemStock, gbc);
         gbc.gridx = 3;
+        add(lblScore, gbc);
+        
+        gbc.gridx = 4;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         add(btnAddToCart, gbc);
@@ -77,9 +81,15 @@ public class ItemPanel extends JPanel {
         //lblItemPrice.setBackground(Color.GREEN);
         lblItemPrice.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         
+        lblScore.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        lblScore.setAlignmentX(LEFT_ALIGNMENT);
+        
         lblItemName.setText(String.format(" %-10s", item.getName()));
         lblItemStock.setText(String.format("Stock: %-4d", item.getAmount()));
         lblItemPrice.setText(String.format("Price: %-5.2fkr", item.getPrice()));
+        lblScore.setText(String.format("Score: %.1f/5,0", item.getScore()));
+        
+        
         
         doLayout();
     }

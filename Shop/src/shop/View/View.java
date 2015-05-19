@@ -244,8 +244,8 @@ public class View extends JFrame
         productPanel.clearItems();
         
         Item items[] = listener.getItems();
-        for (Item i : items)
-        {
+        for (Item i : items) {
+            System.out.println(i.getName());
             productPanel.addItem(i);
         }
         
