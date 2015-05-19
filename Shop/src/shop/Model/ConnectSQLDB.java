@@ -254,27 +254,33 @@ public class ConnectSQLDB {
     
     //Returns 1 if item existed, item.amount and rating was updated.
     //Returns 2 if item not existed and was succesfuly added to db.
+    //Returns 3 if price not match existing price.
     //Returns 0 if adding item fails.
     public int insertItem(Item item) {
         try {
             //Check if item already exist in database.
                 //verify with name and categoryID (categoryID has same value as ID)
                  rs = statement.executeQuery("SELECT Category.name, Category.ID, "
-                    + "Item.name, Item.categoryID, Item.ID "
+                    + "Item.name, Item.categoryID, Item.ID, Item.price "
                     + "FROM Item "
                     + "INNER JOIN Category ON Item.categoryID = Category.ID ");
                
                while (rs.next()) {
                    String category = rs.getString("Category.name");
                    String name = rs.getString("Item.name");
+                   int price = rs.getInt("Item.price");
                    if (category.equals(item.getCategory()) && name.equals(item.getName())) {
-                        //if Item exist, ++amount and calculate rating.
+                       if (price == item.getPrice()) {
+                           //if Item exist, ++amount and calculate rating.
                         statement.executeUpdate("UPDATE Item " +
                                     " SET Item.amount = Item.amount + " + item.getAmount() +
                                     " WHERE Item.name = '" + item.getName() + "'" + 
                                     " AND '" + category + "' = '" + item.getCategory() + "'");
-
                         return 1;
+                       }
+                       else {
+                           return 3;
+                       }   
                    }
                }
 

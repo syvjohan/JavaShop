@@ -42,7 +42,9 @@ public class ConfigDatabase implements ShopListener {
 
     @Override
     public int addItem(Item item) {
-        return connectSQLDB.insertItem(item);
+        int i = connectSQLDB.insertItem(item);
+        System.out.println(i);
+        return i;
     }
 
     @Override
