@@ -19,7 +19,6 @@ import shop.View.ShopListener;
  */
 public class ConfigDatabase implements ShopListener {
     private ConnectSQLDB connectSQLDB;
-    private int indexID = 0;
     
     public ConfigDatabase() {
         connectSQLDB = new ConnectSQLDB();
@@ -38,17 +37,14 @@ public class ConfigDatabase implements ShopListener {
     
     @Override
     public int getNewID() {
-       ArrayList<Integer> container = connectSQLDB.getAllItemsID();
-       do {
-           ++indexID;
-       } while (container.contains(indexID));
-       
-        return indexID;
+       return connectSQLDB.createNewID();
     }
 
     @Override
     public int addItem(Item item) {
-        return connectSQLDB.insertItem(item);
+        int i = connectSQLDB.insertItem(item);
+        System.out.println(i);
+        return i;
     }
 
     @Override
