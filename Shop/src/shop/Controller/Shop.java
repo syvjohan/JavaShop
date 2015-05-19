@@ -34,10 +34,10 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        cf.reset();
+        //cf.reset();
         
         Item item = new Item();
-        item.setProductId(3);
+        item.setProductId(cf.getNewID());
         item.setName("reglar");
         item.setAmount(10);
         item.setPrice((float) 100.10);
@@ -46,14 +46,15 @@ public class Shop {
         
         
         Item item2 = new Item();
-        item2.setProductId(2);
+        item2.setProductId(cf.getNewID());
         item2.setName("fotboll");
         item2.setAmount(1);
         item2.setPrice((float) 490.00);
-        item2.setCategory("bollar");
+        item2.setCategory("runda grejer");
         item2.setScore(8);
         
         //cf.login("testcustomer", "pwdcustomer");
+        //cf.addItem(item2);
         //cf.addItem(item);
         //cf.addItem(item2);
         //cf.register(2, "testcustome", "johantest", "johan", "Berguvsgatan", "21559", "870610-3333"); 

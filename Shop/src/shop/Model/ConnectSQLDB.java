@@ -30,6 +30,7 @@ public class ConnectSQLDB {
     boolean connectionStatus;
     ResultSet rs;
     Query query;
+    private int indexID = 0;
     
     public ConnectSQLDB() {
         EstablishConnection();
@@ -81,7 +82,6 @@ public class ConnectSQLDB {
                     + "FROM Item "
                     + "INNER JOIN CATEGORY ON Item.categoryID = Category.ID "
                     + "INNER JOIN Rating ON Item.ID = Rating.ID");
-            
             
             while (rs.next()) {
                 Item item = new Item();
@@ -252,82 +252,58 @@ public class ConnectSQLDB {
         }
     }
     
-    //Returns 1 if item existed, item.amount was updated.
+    //Returns 1 if item existed, item.amount and rating was updated.
     //Returns 2 if item not existed and was succesfuly added to db.
     //Returns 0 if adding item fails.
-    public int insertItem(Item item) {      
+    public int insertItem(Item item) {
         try {
-               //Check if item already exist in database.
-               rs = statement.executeQuery("SELECT Category.name, Category.ID, "
-                    + "Item.name, Item.categoryID, Item.ID, Rating.ID, Rating.rate "
+            //Check if item already exist in database.
+                //verify with name and categoryID (categoryID has same value as ID)
+                 rs = statement.executeQuery("SELECT Category.name, Category.ID, "
+                    + "Item.name, Item.categoryID, Item.ID "
                     + "FROM Item "
-                    + "INNER JOIN Category ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ID = Rating.ID");
+                    + "INNER JOIN Category ON Item.categoryID = Category.ID ");
                
                while (rs.next()) {
-                   String cat = rs.getString("Category.name");
+                   String category = rs.getString("Category.name");
                    String name = rs.getString("Item.name");
-                   String art = rs.getString("Item.ID");
-                   if (cat.equals(item.getCategory()) && name.equals(item.getName())) {
+                   if (category.equals(item.getCategory()) && name.equals(item.getName())) {
+                        //if Item exist, ++amount and calculate rating.
                         statement.executeUpdate("UPDATE Item " +
-                                " SET Item.amount = Item.amount + " + item.getAmount() +
-                                " WHERE Item.name = '" + item.getName() + "'" + 
-                                " AND Item.ID = '" + item.getProductId() + "'");
-                       
+                                    " SET Item.amount = Item.amount + " + item.getAmount() +
+                                    " WHERE Item.name = '" + item.getName() + "'" + 
+                                    " AND '" + category + "' = '" + item.getCategory() + "'");
+
                         return 1;
                    }
                }
-               
-                //Check if category exist.
-                Map<Integer, String> category = new HashMap();
-                int id = 0;
-                String name = "";
-                rs = statement.executeQuery("SELECT * FROM Category ");
-                rs.first();
-                while (rs.next()) {
-                    id = rs.getInt("ID");
-                    name = rs.getString("name");
-                    category.put(id, name);
-                }
-                
-                int categoryID = -1;
-                Iterator it = category.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry)it.next();
-                    if (pair.getValue().equals(item.getCategory())) {
-                        categoryID = Integer.parseInt(pair.getKey().toString());
-                        break;
-                    }
-                }      
-                //If name dont exist.
-                if (categoryID == -1) {
-                    statement.executeUpdate("INSERT INTO Category "
-                            + "VALUES (" + item.getProductId() + ",' " + item.getCategory() + "')");
-                    
-                    /*
-                    //Get category id.
-                    rs = statement.executeQuery("SELECT * FROM Category ");  
 
-                    while (rs.next()) {
-                        int tmpID = rs.getInt("ID");
-                        String tmpName = rs.getString("name");
-                        if (item.getCategory().equals(tmpName)) {
-                            categoryID = tmpID;
-                        }
-                    }
-                            */
-                    categoryID = item.getProductId();
+                //If item not exist in database.
+                //check if category name exist
+                rs = statement.executeQuery("SELECT * FROM Category"
+                        + " WHERE Category.name = '" + item.getCategory() + "'");
+                
+                 //if true set categoryID to the same categoryID
+                int id = item.getProductId();
+                if (rs.next()) {
+                    id = rs.getInt("Category.ID");
+                }
+                //if false add category name and create a new categoryID
+                else {
+                    id = createNewID();
+                    statement.executeUpdate("INSERT INTO Category "
+                            + "VALUES( '" + id + "', '" + item.getCategory() + "')");
                 }
                 
-                statement.executeUpdate("INSERT INTO Item (name, categoryID, amount, price) "
-                    + "VALUES ('" + item.getName() + "', '"
-                    + categoryID + "', " + item.getAmount() + ", " + item.getPrice() 
-                    + ")");
+                //Insert item.
+                statement.executeUpdate("INSERT INTO Item " + 
+                        "VALUES('" + item.getProductId() + "', '" + item.getName() + "', '" + id + "', '" + item.getAmount() +"', '" +
+                        item.getPrice() + "')");
                 
                 return 2;
-                
-        } catch (SQLException e) {
-            e.printStackTrace();
+            
+        } catch(SQLException err) {
+            err.printStackTrace();
         }
         
         return 0;
@@ -381,7 +357,7 @@ public class ConnectSQLDB {
         } 
     }
     
-    public ArrayList<Integer> getAllItemsID() {
+    private ArrayList<Integer> getAllItemsID() {
         ArrayList<Integer> container = new ArrayList<Integer>();
         
         try {
@@ -399,12 +375,19 @@ public class ConnectSQLDB {
         return container;
     }
     
+    public int createNewID() {
+         ArrayList<Integer> container = getAllItemsID();
+       do {
+           ++indexID;
+       } while (container.contains(indexID));
+       
+        return indexID;
+    }
+    
     public ArrayList<Item> calculateAverageRating(ArrayList<Item> items) {       
         for (int i = 0; i != items.size(); i++) {
             for (int k = items.size() -1; k != i; k--) {
-                if (items.get(i).getCategory().equals(items.get(k).getCategory()) &&
-                        items.get(i).getName().equals(items.get(k).getName())) 
-                {
+                if (items.get(i).getProductId() == items.get(k).getProductId()) {
                     float score = items.get(i).getScore() + items.get(k).getScore();
                     score = score/2;
                     items.get(i).setScore(score);
