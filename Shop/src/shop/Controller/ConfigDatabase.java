@@ -119,13 +119,6 @@ public class ConfigDatabase implements ShopListener {
     }
 
     @Override
-    public Item getItem(String articleNumber) {
-        Item item = new Item();
-        item = connectSQLDB.getItem(articleNumber);
-        return item;
-    }
-
-    @Override
     public Item[] getItems() {
         ArrayList<Item> receive = new ArrayList<>();
         receive = connectSQLDB.getAllItems();
@@ -141,7 +134,7 @@ public class ConfigDatabase implements ShopListener {
     
     @Override
     public boolean updateItem(Item item) {
-        return false;
+        return connectSQLDB.updateItem(item);
     }
     
     @Override
@@ -149,3 +142,10 @@ public class ConfigDatabase implements ShopListener {
          return username;
      }
 }
+
+//TODO updateItem
+//TODO UpdateItemScore.
+//Ta bort en vara ur sortimentet
+//Välja vilka varor som ska visas efter kategori
+//Lägga in en ny person.
+//SQL för att hämta all personal

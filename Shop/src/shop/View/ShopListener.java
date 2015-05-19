@@ -33,9 +33,6 @@ public interface ShopListener {
     public abstract boolean register(int level, String userName,
             String password, String name, String street, String zip, String ssn);
     
-    // Return an item based on ArticleNumber.
-    public abstract Item getItem(String articleNumber);
-    
     // Return all items.
     public abstract Item[] getItems();
     
