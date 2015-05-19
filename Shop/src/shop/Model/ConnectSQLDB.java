@@ -209,36 +209,6 @@ public class ConnectSQLDB {
         return container;
     }
     
-    public Item getItem(String objToFind) {
-        Item item = new Item();
-        Integer obj = Integer.parseInt(objToFind);
-        
-        try {           
-            rs = statement.executeQuery("SELECT Item.ID, Item.name, Item.categoryID, "
-                    + "Item.amount, Item.price, Category.name, Category.ID, Rating.rate "
-                    + "FROM Item "
-                    + "INNER JOIN Category ON Item.categoryID = Category.ID "
-                    + "INNER JOIN Rating ON Item.ID= Rating.ID");
-            
-            while (rs.next()) {
-                if (obj.equals(rs.getInt("Item.ID"))) {
-                    item.setProductId(rs.getInt("Item.ID"));
-                    item.setName(rs.getString("Item.name"));
-                    item.setCategory(rs.getString("Category.name"));
-                    item.setAmount(rs.getInt("Item.amount"));
-                    item.setPrice(rs.getFloat("Item.price"));
-                    item.setScore(rs.getFloat("Rating.rate"));
-                    return item;
-                }  
-            }
-            
-        } catch (SQLException err) {
-             err.printStackTrace();
-        }      
-
-        return item;
-    }
-    
     public boolean deleteItem(Item item) {
         try {  
             rs = statement.executeQuery("SELECT * FROM Item");
@@ -387,6 +357,10 @@ public class ConnectSQLDB {
         }
         
         return 0;
+    }
+    
+    public boolean updateItem(Item item) {
+        return true;
     }
     
     public void insert(String table, String[] values) {
