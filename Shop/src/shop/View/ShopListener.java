@@ -16,9 +16,11 @@ import shop.Model.Person;
 public interface ShopListener {
     
     // Add an item in a certain category etc.
+    //Observe that addItem calls same function in model as updateItem (ConnectSQLDB.insertItem).
     public abstract int addItem(Item item);
     
-    // Remove 1 or more items.
+    //Remove Item from the catalog (if necessary removes catalog).
+    //For doing changes in the item objects stored in db please use updateItem(Item) instead.
     public abstract boolean removeItem(Item item);
     
     // Update the score of an item.

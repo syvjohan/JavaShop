@@ -47,7 +47,7 @@ public class Shop {
         
         
         Item item2 = new Item();
-        item2.setProductId(cf.getNewID());
+        item2.setProductId(2);
         item2.setName("fotboll");
         item2.setAmount(1);
         item2.setPrice((float) 490.00);
@@ -59,18 +59,10 @@ public class Shop {
         person.setSsn("19880306");
         person.setUserLvl(1);
         
-        //cf.login("testcustomer", "pwdcustomer");
-        //cf.addItem(item2);
-        //cf.addItem(item);
-        //cf.addItem(item2);
-        //cf.register(2, "testcustome", "johantest", "johan", "Berguvsgatan", "21559", "870610-3333"); 
-        boolean i = cf.deleteUserLvl("testcustomer", 1);
-        System.out.println(i);
         
-        cf.getAllPersons();
         
         // Send in your controller implementing the ShopListener interface.
-        View view = new View(cf);        
+        //View view = new View(cf);        
 
     }
     

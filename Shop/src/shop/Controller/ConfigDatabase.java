@@ -162,8 +162,8 @@ public class ConfigDatabase implements ShopListener {
     
     @Override
     public boolean deleteUserLvl(String username, int lvl) {
-        //Kan korrumpera databasen om användaren endast har en userlvl.
-        //I detta fall kommer getAllPersons() inte retunera personen 
+        //Kan orsaka problem om användaren endast har en userlvl då
+        //getAllPersons() inte retunerar personen 
         //eftersom den inte innehar något username
        //return connectSQLDB.removeUserLvl(username, lvl);
         return false;

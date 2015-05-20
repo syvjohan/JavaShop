@@ -211,23 +211,40 @@ public class ConnectSQLDB {
     
     public boolean deleteItem(Item item) {
         try {  
-            rs = statement.executeQuery("SELECT * FROM Item");
+            rs = statement.executeQuery("SELECT ID, name, categoryID FROM Item");
             
+            int c = 0;
+            ArrayList<Integer> arrCategories = new ArrayList<>();
+            boolean flag = false;
             while(rs.next()) {
                 String name = rs.getString("name");
-                int amount = rs.getInt("amount");
-                int art = rs.getInt("ID");
+                int category = rs.getInt("categoryID");
+                int id = rs.getInt("ID");
+                arrCategories.add(category);
                 
-                if (name.equals(item.getName()) && art == item.getProductId()) {
-                    if (amount >= item.getAmount()) {
-                        statement.executeUpdate("UPDATE Item " +
-                                " SET Item.amount = Item.amount - " + item.getAmount() +
+                if (name.equals(item.getName()) && id == item.getProductId()) {
+                        statement.executeUpdate("DELETE FROM Item " +
                                 " WHERE Item.name = '" + item.getName() + "'" + 
                                 " AND Item.ID = '" + item.getProductId() + "'");
                         
-                        return true;
+                        c = category;
+                        flag = true;
+                        break;
+                }
+            }
+            
+            if(flag) {
+                int count = 0;
+                for (int i = 0; i < arrCategories.size(); i++) {
+                    if (arrCategories.get(i) == c) {
+                        ++count;
                     }
                 }
+                if (count == 1) {
+                    statement.executeUpdate("DELETE FROM Category "
+                            + "WHERE ID = '" + c + "'");
+                }
+                return true;
             }
             
         } catch (SQLException err) {
@@ -573,6 +590,8 @@ public class ConnectSQLDB {
         
         return false;
     }
+    
+   
     
     public int createNewID() {
          ArrayList<Integer> container = getAllItemsID();
