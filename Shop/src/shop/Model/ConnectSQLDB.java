@@ -487,6 +487,92 @@ public class ConnectSQLDB {
         
         return container;
     }
+
+    public boolean removeUserLvl(String username, int lvl) {
+        String ssn;
+        if (lvl == 1) {
+            ssn = deleteCustomer(username);
+            if (!ssn.isEmpty()) return true;
+        } else if (lvl == 2) {
+            ssn = deleteStaff(username);
+            if (!ssn.isEmpty()) return true;
+        }
+        return false;
+    }
+    
+    private String deleteStaff(String username) {
+        try {
+            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
+                    + "FROM Staff");
+            
+            while (rs.next()) {
+                String uName = rs.getString("username");
+                String ssn = rs.getString("PERSONALNUMBER");
+                
+                if (uName.equals(username)) {
+                    statement.executeUpdate("DELETE FROM Staff "
+                            + "WHERE username = '" + username + "'");
+                    
+                    return ssn;
+                }
+            }
+
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return "";
+    }
+    
+    private String deleteCustomer(String username) {
+        try {
+            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
+                    + "FROM Customer");
+            
+            while (rs.next()) {
+                String uName = rs.getString("username");
+                String ssn = rs.getString("PERSONALNUMBER");
+                
+                if (uName.equals(username)) {
+                    statement.executeUpdate("DELETE FROM Customer "
+                            + "WHERE username = '" + username + "'");
+                    
+                    return ssn;
+                }
+            }
+
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return "";
+    }
+    
+    public boolean deletePerson(String username) {
+        try {
+            
+            String ssnC = deleteCustomer(username);
+            String ssnS = deleteStaff(username);
+            
+            if (!ssnC.isEmpty()) {
+                statement.executeUpdate("DELETE FROM Person "
+                    + "WHERE Person.PERSONALNUMBER = '" + ssnC + "'");
+                
+                return true;
+                
+            } else if (!ssnS.isEmpty()) {
+                statement.executeUpdate("DELETE FROM Person "
+                    + "WHERE Person.PERSONALNUMBER = '" + ssnS + "'");
+                
+                return true;
+            }
+
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return false;
+    }
     
     public int createNewID() {
          ArrayList<Integer> container = getAllItemsID();

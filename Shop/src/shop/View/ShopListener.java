@@ -46,8 +46,15 @@ public interface ShopListener {
     //Creates a unique productId
     public abstract int getNewID();
     
+    //Get specific user personalnumber.
     public abstract String getUserSSN(String username);
     
     //Return all person (staff and customer).
     public abstract Person[] getAllPersons();
+    
+    //Delete a specific person from database.
+    public abstract boolean deleteUser(String username);
+    
+    //Delete level for person.
+    public abstract boolean deleteUserLvl(String username, int lvl);
 }

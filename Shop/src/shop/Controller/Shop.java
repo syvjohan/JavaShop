@@ -8,6 +8,7 @@ package shop.Controller;
 import shop.Model.ConnectSQLDB;
 import shop.Model.Item;
 import shop.View.View;
+import shop.Model.Person;
 
 /**
  *
@@ -53,12 +54,20 @@ public class Shop {
         item2.setCategory("runda grejer");
         item2.setScore(8);
         
+        Person person = new Person();
+        person.setName("John Doe");
+        person.setSsn("19880306");
+        person.setUserLvl(1);
+        
         //cf.login("testcustomer", "pwdcustomer");
         //cf.addItem(item2);
         //cf.addItem(item);
         //cf.addItem(item2);
         //cf.register(2, "testcustome", "johantest", "johan", "Berguvsgatan", "21559", "870610-3333"); 
+        boolean i = cf.deleteUserLvl("testcustomer", 1);
+        System.out.println(i);
         
+        cf.getAllPersons();
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
