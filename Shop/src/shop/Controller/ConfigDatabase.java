@@ -147,7 +147,6 @@ public class ConfigDatabase implements ShopListener {
      }
 }
 
-//TODO updateItem
 //TODO UpdateItemScore.
 //Ta bort en vara ur sortimentet
 //Välja vilka varor som ska visas efter kategori
