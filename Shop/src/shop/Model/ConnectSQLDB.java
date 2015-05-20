@@ -425,6 +425,69 @@ public class ConnectSQLDB {
         return container;
     }
     
+    private ArrayList<Person> getAllCustomers() {
+        ArrayList<Person> container = new ArrayList<>();
+        try {
+            //Customer = 1.
+            rs = statement.executeQuery("SELECT Person.PERSONALNUMBER, Person.name, "
+                + "Person.street, Person.postnumber, Customer.PERSONALNUMBER, "
+                + "Customer.username "
+                + "FROM Person "
+                + "INNER JOIN Customer ON Person.PERSONALNUMBER = Customer.PERSONALNUMBER");
+            
+            while(rs.next()) {
+                Person person = new Person();
+                person.setName(rs.getString("Person.name"));
+                person.setSsn(rs.getString("Person.personalnumber"));
+                person.seStreet(rs.getString("Person.street"));
+                person.setZip(rs.getString("Person.postnumber"));
+                person.setUsername(rs.getString("Customer.username"));
+                person.setUserLvl(1);
+                container.add(person);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+
+        return container;
+    }
+    
+    private ArrayList<Person> getAllStaffs() {
+        ArrayList<Person> container = new ArrayList<>();
+         
+        try {
+            //Staff = 2.
+             rs = statement.executeQuery("SELECT Person.PERSONALNUMBER, Person.name, "
+                + "Person.street, Person.postnumber, Staff.PERSONALNUMBER, Staff.username "
+                + "FROM Person "
+                + "INNER JOIN Staff ON Person.PERSONALNUMBER = Staff.PERSONALNUMBER");
+            
+            while(rs.next()) {
+                Person person = new Person();
+                person.setName(rs.getString("Person.name"));
+                person.setSsn(rs.getString("Person.PERSONALNUMBER"));
+                person.seStreet(rs.getString("Person.street"));
+                person.setZip(rs.getString("Person.postnumber"));
+                person.setUsername(rs.getString("Staff.username"));
+                person.setUserLvl(2);
+                container.add(person);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return container;
+    }
+    
+    public ArrayList<Person> getAllPersons() {
+        ArrayList<Person> container = new ArrayList<>();
+        
+        container.addAll(getAllCustomers());
+        container.addAll(getAllStaffs());
+        
+        return container;
+    }
+    
     public int createNewID() {
          ArrayList<Integer> container = getAllItemsID();
        do {

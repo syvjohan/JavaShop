@@ -34,7 +34,7 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        //cf.reset();
+        cf.reset();
         
         Item item = new Item();
         item.setProductId(cf.getNewID());
@@ -58,6 +58,7 @@ public class Shop {
         //cf.addItem(item);
         //cf.addItem(item2);
         //cf.register(2, "testcustome", "johantest", "johan", "Berguvsgatan", "21559", "870610-3333"); 
+        
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import shop.Model.ConnectSQLDB;
 import shop.Model.Item;
+import shop.Model.Person;
 import shop.Model.SQLHelper;
 import shop.View.ShopListener;
 
@@ -145,6 +146,14 @@ public class ConfigDatabase implements ShopListener {
      public String getUserSSN(String username) {
          return username;
      }
+     
+     @Override
+    public Person[] getAllPersons() {
+        ArrayList<Person> receive = new ArrayList<>();
+        receive = connectSQLDB.getAllPersons();
+        final Person[] container = receive.toArray(new Person[receive.size()]);
+        return container;
+    }
 }
 
 //TODO UpdateItemScore.
@@ -156,8 +165,8 @@ public class ConfigDatabase implements ShopListener {
 
 
 //Peter behöver:
-//En klass som hetter person (get set metoder) inkl username.
-//En funktion som returnerar alla personer (anställda och kunder)
+//En klass som hetter person (get set metoder) inkl username. KLAR!
+//En funktion som returnerar alla personer (anställda och kunder) KLAR!
 //En funktion för att ta bort en användar (arg username) samt ta bort ett item (arg item) bägge retunerar bool.
 //Updaterar en person (arg person).
-//Uppdaterar ett item (arg item)
+//Uppdaterar ett item (arg item) KLAR!

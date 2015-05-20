@@ -15,6 +15,7 @@ public class Person {
     private String street;
     private String zip;
     private String username;
+    private int userLvl;
     
     public Person() {
         ssn = "";
@@ -24,12 +25,13 @@ public class Person {
         username = "";
     }
     
-    public Person(String ssn, String name, String street, String zip, String username) {
+    public Person(String ssn, String name, String street, String zip, String username, int userLvl) {
         this.ssn = ssn;
         this.name = name;
         this.street = street;
         this.zip = zip;
         this.username = username;
+        this.userLvl = userLvl;
     }
     
     public String getSsn() {
@@ -72,6 +74,14 @@ public class Person {
         this.username = username;
     }
     
+    public int getUserLvl() {
+        return this.userLvl;
+    }
+    
+    public void setUserLvl(int userLvl) {
+        this.userLvl = userLvl;
+    }
+    
     public Person makeGenericCopy() {
         Person p = new Person();
         p.name = name;
@@ -79,6 +89,7 @@ public class Person {
         p.street = street;
         p.username = username;
         p.zip = zip;
+        p.userLvl = userLvl;
         return p;
     }
 }

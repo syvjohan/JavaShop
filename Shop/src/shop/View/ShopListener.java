@@ -7,6 +7,7 @@ package shop.View;
 
 import java.util.Map;
 import shop.Model.Item;
+import shop.Model.Person;
 
 /**
  *
@@ -46,4 +47,7 @@ public interface ShopListener {
     public abstract int getNewID();
     
     public abstract String getUserSSN(String username);
+    
+    //Return all person (staff and customer).
+    public abstract Person[] getAllPersons();
 }
