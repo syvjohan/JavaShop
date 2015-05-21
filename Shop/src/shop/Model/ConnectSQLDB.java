@@ -30,7 +30,6 @@ public class ConnectSQLDB {
     Statement statement; 
     boolean connectionStatus;
     ResultSet rs;
-    Query query;
     private int indexID = 0;
     
     public ConnectSQLDB() {
@@ -53,16 +52,6 @@ public class ConnectSQLDB {
             err.printStackTrace();
               System.out.println("Database-driver could not be found");
         }
-    }
-
-    private boolean testConnection() {
-        try {
-            connection.isValid(2000);
-            return true;
-        } catch (SQLException err) {
-             err.printStackTrace();
-        }
-        return false;
     }
     
     public void cleanUp() {
