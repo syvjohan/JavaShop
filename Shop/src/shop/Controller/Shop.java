@@ -56,13 +56,17 @@ public class Shop {
         
         Person person = new Person();
         person.setName("John Doe");
-        person.setSsn("19880306");
+        person.setSsn("19880306-4568");
+        person.setUsername("testcustomer");
+        person.setUserLvl(2);
+        person.setZip("12345");
+        person.seStreet("bondageRoad");
         person.setUserLvl(1);
         
-        
+        //cf.updatePerson(person, "testcustomer");
         
         // Send in your controller implementing the ShopListener interface.
-        //View view = new View(cf);        
+        View view = new View(cf);        
 
     }
     

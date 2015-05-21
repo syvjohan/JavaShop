@@ -523,10 +523,10 @@ public class ConnectSQLDB {
                             + ", Person.postnumber = " + person.getZip()
                             + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
                     
-                    statement.executeUpdate("UPDATE Customer"
-                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
-                            + ", Customer.username = " + person.getUsername()
-                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
+                    statement.executeUpdate("UPDATE Staff"
+                            + " SET Customer.PERSONALNUMBER = " + person.getSsn()
+                            + ", Staff.username = " + person.getUsername()
+                            + " WHERE Staff.PERSONALNUMBER = '" + ssn + "'");
                     
                     return true;
                 }
@@ -540,7 +540,7 @@ public class ConnectSQLDB {
         return false;
     }
             
-    public boolean updateCustomer(Person person, Sting oldUsername) {
+    public boolean updateCustomer(Person person, String oldUsername) {
         try {
             //Check if person exist.
             rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
@@ -551,12 +551,12 @@ public class ConnectSQLDB {
                 String ssn = rs.getString("PERSONALNUMBER");
                 
                 if (oldUsername.equals(uName)) {
-                    statement.executeUpdate("UPDATE Person"
-                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
-                            + ", Person.name = " + person.getName()
-                            + ", Person.street = " + person.getStreet()
-                            + ", Person.postnumber = " + person.getZip()
-                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
+                    statement.executeUpdate("UPDATE Person "
+                            + "SET PERSONALNUMBER = '" + person.getSsn() 
+                            + "', name = '" + person.getName()
+                            + "', street = '" + person.getStreet()
+                            + "', postnumber = '" + person.getZip()
+                            + "' WHERE Person.PERSONALNUMBER = '" + ssn + "'");
                     
                     statement.executeUpdate("UPDATE Customer"
                             + "SET Customer.PERSONALNUMBER = " + person.getSsn()
@@ -566,7 +566,6 @@ public class ConnectSQLDB {
                     return true;
                 }
             }
-
         
         } catch (SQLException err) {
             err.printStackTrace();
@@ -576,35 +575,8 @@ public class ConnectSQLDB {
     }
     
     public boolean updatePerson(Person person, String oldUsername) {
-        try {
-            //Check if person exist.
-            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
-                    + "FROM Customer");
-            
-            while (rs.next()) {
-                String uName = rs.getString("username");
-                String ssn = rs.getString("PERSONALNUMBER");
-                
-                if (oldUsername.equals(uName)) {
-                    statement.executeUpdate("UPDATE Person"
-                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
-                            + ", Person.name = " + person.getName()
-                            + ", Person.street = " + person.getStreet()
-                            + ", Person.postnumber = " + person.getZip()
-                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
-                    
-                    statement.executeUpdate("UPDATE Customer"
-                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
-                            + ", Customer.username = " + person.getUsername()
-                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
-                    
-                    return true;
-                }
-            }
-
-        
-        } catch (SQLException err) {
-            err.printStackTrace();
+        if (updateCustomer(person, oldUsername) || updateStaff(person, oldUsername)) {
+            return true;
         }
         
         return false;
