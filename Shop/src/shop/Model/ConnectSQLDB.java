@@ -65,7 +65,7 @@ public class ConnectSQLDB {
         return false;
     }
     
-    private void cleanUp() {
+    public void cleanUp() {
         try {
             rs.close();
             statement.close();
