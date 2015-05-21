@@ -247,7 +247,7 @@ public class ConnectSQLDB {
                             + "WHERE ID = '" + c + "'");
                 }
                 
-                statement.executeUpdate("DELETE FROM Rating"
+                statement.executeUpdate("DELETE FROM Rating "
                         + "WHERE ID = '" + identifier + "'");
                 
                 return true;

@@ -130,7 +130,7 @@ public class View extends JFrame
         
         setSize(new Dimension(640, 480));
         setVisible(true);
-        setUserLevel("Peter", 1);
+        setUserLevel("Peter", 2);
     }
     
     private void doLogin()
