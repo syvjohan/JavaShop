@@ -36,6 +36,8 @@ public class View extends JFrame
     private SidePanel sidePanel;
     private ProductPanel productPanel;
     private ShopListener listener;
+    private UserFrame userFrame;
+    private JMenuItem userMenu = new JMenuItem("User management");
     
     public View(ShopListener listener)
     {
@@ -44,6 +46,8 @@ public class View extends JFrame
         setMinimumSize(new Dimension(800 ,600));
         this.listener = listener;
         initGUI();
+        
+        userFrame = new UserFrame( this, listener );
     }    
     
     public void setSidePanel(SidePanel pnl)
@@ -110,10 +114,15 @@ public class View extends JFrame
                 listener.resetDataBaseDEBUG();
         });
         
+        userMenu.addActionListener((ActionEvent e)-> { 
+            userFrame.setVisible(true);
+        });
+        
         
         menu.add(loginMenu);
         menu.add(regMenu);
         menu.add(resetMenu);
+        menu.add(userMenu);
         
         setJMenuBar(menuBar);
         
@@ -121,7 +130,7 @@ public class View extends JFrame
         
         setSize(new Dimension(640, 480));
         setVisible(true);
-        setUserLevel("Peter", 2);
+        setUserLevel("Peter", 1);
     }
     
     private void doLogin()
@@ -196,6 +205,7 @@ public class View extends JFrame
         CustomerPanel cpnl;
         EmployeePanel epnl;
         productPanel.setUserLevel(level);
+        userMenu.setEnabled(false);
         
         switch(level)
         {
@@ -211,6 +221,7 @@ public class View extends JFrame
                 epnl = new EmployeePanel(this, listener);
                 epnl.setUser(user);
                 setSidePanel(epnl);
+                userMenu.setEnabled(true);
                 break;
         }
     }
@@ -238,6 +249,7 @@ public class View extends JFrame
             gbc.weightx = 0.8f;
             gbc.fill = GridBagConstraints.BOTH;
 
+            
             add(productPanel, gbc);
         }
         
@@ -248,7 +260,9 @@ public class View extends JFrame
             System.out.println(i.getName());
             productPanel.addItem(i);
         }
+        productPanel.initFilters();
         productPanel.setVisible(false);
         productPanel.setVisible(true);
+        
     }
 }

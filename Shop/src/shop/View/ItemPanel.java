@@ -107,4 +107,8 @@ public class ItemPanel extends JPanel {
             btnAddToCart.setText("Buy");
         }
     }
+    
+    public Item getItem() {
+        return item;
+    }
 }

@@ -22,6 +22,7 @@ public class EmployeePanel extends SidePanel {
     
     private JButton btnUpdate = new JButton("Update");
     private JButton btnAdd = new JButton("Add");
+    private JButton btnRemove = new JButton("Remove");
     
     private ShopListener listener;
     private Item currentItem;
@@ -103,9 +104,12 @@ public class EmployeePanel extends SidePanel {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         add( btnAdd, gbc );
+        gbc.gridx = 2;
+        add( btnRemove, gbc );
         
         gbc.gridy = 1;
         gbc.gridx = 1;
+        gbc.gridwidth = 3;
         gbc.weightx = 0.75f;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add( tfName, gbc );
@@ -122,12 +126,20 @@ public class EmployeePanel extends SidePanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0.8f;
         gbc.weightx = 1.0f;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 3;
         JPanel pnl = new JPanel();
         pnl.setOpaque(false);
         add( pnl, gbc );
         
         btnUpdate.setEnabled(false);
+        
+        btnRemove.addActionListener( (ActionEvent e) -> { 
+            if (currentItem != null) {
+                listener.removeItem(currentItem);
+                view.update();
+            }
+        });
+        btnRemove.setEnabled(false);
     }
     
     public void editItem(Item item) {
@@ -137,6 +149,8 @@ public class EmployeePanel extends SidePanel {
         tfPrice.setText(String.format("%.2f", item.getPrice()));
         tfStock.setText(String.format("%d", item.getAmount()));
         btnUpdate.setEnabled(true);
+        btnRemove.setEnabled(true);
+        view.update();
     }
     
     public void setUser(String user) {

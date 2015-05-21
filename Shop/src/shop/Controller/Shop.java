@@ -35,7 +35,7 @@ public class Shop {
     public static void main(String[] args) {
         ConnectSQLDB db = new ConnectSQLDB();
         ConfigDatabase cf = new ConfigDatabase();
-        //cf.reset();
+        cf.reset();
         
         Item item = new Item();
         item.setProductId(cf.getNewID());
@@ -65,7 +65,7 @@ public class Shop {
         
         
         // Send in your controller implementing the ShopListener interface.
-        //View view = new View(cf);        
+        View view = new View(cf);        
 
     }
     

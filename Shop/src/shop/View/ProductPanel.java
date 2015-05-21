@@ -11,10 +11,14 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import shop.Model.Item;
@@ -29,38 +33,43 @@ public class ProductPanel extends JPanel {
     private JPanel panel = new JPanel();
     private JScrollPane scroll = new JScrollPane(panel);
     private ArrayList<ItemPanel> items = new ArrayList();
+    private JComboBox comboFilters = new JComboBox();
     
     public ProductPanel(ItemListener listener)
     {
         setLayout(new GridBagLayout());
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0f;
-        gbc.weighty = 1.0f;
+        gbc.weighty = 0.0f;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         
+        JPanel filterPanel = new JPanel();
+        filterPanel.setLayout( new BorderLayout() );
+        filterPanel.add(new JLabel("Filter"), BorderLayout.WEST );
+        filterPanel.add(comboFilters);
+        add(filterPanel, gbc);
+        
+        gbc.gridy = 1;
+        gbc.weighty = 1.0f;
+        gbc.fill = GridBagConstraints.BOTH;
         add(scroll, gbc);
         
         scroll.createVerticalScrollBar();
         this.listener = listener;
-        //setLayout(new GridBagLayout());
-        //BoxLayout layout = new BoxLayout(panel, BoxLayout.PAGE_AXIS);
-        //panel.setLayout(layout);
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        //setLayout(layout);
-        //setBackground(Color.RED);
-//        
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.anchor = GridBagConstraints.PAGE_START;
-//        gbc.ipady = 0;
-//        gbc.ipadx = 0;
-//        gbc.weightx = 1.0f;
-//        gbc.weighty = 0.01f;
-//        gbc.gridwidth = 1;
-//        gbc.gridheight = 1;
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
+        
+        comboFilters.addItemListener((ItemEvent e) -> {
+            String category = e.getItem().toString();
+            for (ItemPanel pnl : items) {
+                if (category.equals(pnl.getItem().getCategory()) || category.equals("All")) {
+                    pnl.setVisible(true);
+                } else {
+                    pnl.setVisible(false);
+                }
+            }
+        });
     }
     
     public void addItem(Item item) {
@@ -81,6 +90,25 @@ public class ProductPanel extends JPanel {
     public void clearItems() {
         for(ItemPanel pnl : items) {
             panel.remove(pnl);
+        }
+    }
+    
+    public void initFilters() {
+        comboFilters.removeAllItems();
+        comboFilters.addItem("All");
+        for (ItemPanel pnl : items) {
+            String category = pnl.getItem().getCategory();
+            boolean exists = false;
+            for (int i = 0; i < comboFilters.getItemCount(); ++i) {
+                if ( comboFilters.getItemAt(i).toString().equals(category) ) {
+                    exists = true;
+                    break;
+                }
+            }
+            
+            if (!exists) {
+                comboFilters.addItem(category);
+            }
         }
     }
 }
