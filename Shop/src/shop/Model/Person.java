@@ -92,4 +92,9 @@ public class Person {
         p.userLvl = userLvl;
         return p;
     }
+    
+    @Override
+    public String toString() {
+        return username;
+    }
 }
