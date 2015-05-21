@@ -115,6 +115,7 @@ public class View extends JFrame
         });
         
         userMenu.addActionListener((ActionEvent e)-> { 
+            userFrame.refreshData();
             userFrame.setVisible(true);
         });
         
@@ -130,7 +131,7 @@ public class View extends JFrame
         
         setSize(new Dimension(640, 480));
         setVisible(true);
-        setUserLevel("Peter", 1);
+        setUserLevel("Peter", 2);
     }
     
     private void doLogin()
@@ -263,6 +264,14 @@ public class View extends JFrame
         productPanel.initFilters();
         productPanel.setVisible(false);
         productPanel.setVisible(true);
+        
+        if ( sidePanel instanceof EmployeePanel ) {
+            productPanel.setUserLevel(2);
+        } else if ( sidePanel instanceof CustomerPanel ) {
+            productPanel.setUserLevel(1);
+        } else {
+            productPanel.setUserLevel(0);
+        }
         
     }
 }
