@@ -167,11 +167,7 @@ public class ConfigDatabase implements ShopListener {
     
     @Override
     public boolean deleteUser(String username) {
-        //Kan orsaka problem om användaren endast har en userlvl då
-        //getAllPersons() inte retunerar personen 
-        //eftersom den inte innehar något username, funktionen fungerar endast om användaren har 2 stycken userLvl.
-       //return connectSQLDB.removeUser(username);
-        return false;
+       return connectSQLDB.removeUser(username);
     }
     
     @Override

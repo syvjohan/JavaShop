@@ -63,6 +63,8 @@ public class Shop {
         person.seStreet("bondageRoad");
         person.setUserLvl(1);
         
+        cf.getAllPersons();
+        cf.deleteUser("testcustomer");
         
         // Send in your controller implementing the ShopListener interface.
         View view = new View(cf);        
