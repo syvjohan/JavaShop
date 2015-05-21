@@ -15,6 +15,7 @@ import java.util.ArrayList;
  *
  * @author johan
  */
+//Class read SQL queries from text file and return each question as a string in an ArrayList.
 public class SQLHelper {
     
     private SQLHelper() {}

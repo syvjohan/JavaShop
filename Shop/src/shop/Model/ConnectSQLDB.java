@@ -371,6 +371,7 @@ public class ConnectSQLDB {
         return 0;
     }
    
+    //Insert queries from text file (SQLHelper) into database.
     public void insert(String table, String[] values) {
         
         StringBuilder builder = new StringBuilder();
