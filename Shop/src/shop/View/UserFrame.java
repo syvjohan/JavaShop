@@ -21,6 +21,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import shop.Model.Person;
 
+// This class implements the user management GUI
+// It can only be opened by staff and allows adding/removing new users
+// as well as viewing their current information.
 public class UserFrame extends JFrame {
     private View view;
     private ShopListener listener;
@@ -122,6 +125,7 @@ public class UserFrame extends JFrame {
         gbc.gridx = 2;
         panel.add(btnClear, gbc);
         
+        // Clear all the text fields.
         btnClear.addActionListener((ActionEvent e)-> {
             tfUserName.setText("");
             tfPassword.setText("");
@@ -134,6 +138,8 @@ public class UserFrame extends JFrame {
         cmbUserLevel.addItem(1);
         cmbUserLevel.addItem(2);
         
+        // This handler updates the textfields to display the information
+        // about the user that just got selected.
         list.addListSelectionListener((ListSelectionEvent e) -> {
             if (e.getValueIsAdjusting() || list.getSelectedIndex() == -1)
                 return;
@@ -144,8 +150,11 @@ public class UserFrame extends JFrame {
             tfAddr.setText(p.getStreet());
             tfZip.setText(p.getZip());
             tfName.setText(p.getName());
+            cmbUserLevel.setSelectedIndex(p.getUserLvl()-1);
         });
         
+        // This handler attempts to add a new user to the database
+        // and displays a message if it was succesful or if it failed.
         btnAdd.addActionListener((ActionEvent e)-> {
             boolean result = listener.register(
                     cmbUserLevel.getSelectedIndex() + 1,
@@ -164,6 +173,8 @@ public class UserFrame extends JFrame {
             refreshData();
         });
         
+        // This handler attempts to remove a user from the database
+        // and displays a message if the operation failed.
         btnRemove.addActionListener((ActionEvent e)->{
             if ( !listener.deleteUser(tfUserName.getText())) {
                 JOptionPane.showMessageDialog(null, "Could not remove user!");
@@ -173,6 +184,7 @@ public class UserFrame extends JFrame {
         });
     }
     
+    // Re-Sync with the database.
     public void refreshData() {
         model.removeAllElements();
         Person[] persons = listener.getAllPersons();

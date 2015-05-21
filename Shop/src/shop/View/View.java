@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shop.View;
 
 import java.awt.Color;
@@ -27,10 +22,11 @@ import javax.swing.JTextField;
 import static javax.swing.text.StyleConstants.Size;
 import shop.Model.Item;
 
-/**
- *
- * @author Zerkish
- */
+// This class is the main entrypoint for the view
+// It ties together all the functionality of the application with user input,
+// while managing layout. It's sort of a controller for the View module.
+// It does all its communication with the Database through
+// the controller interface "ShopListener".
 public class View extends JFrame
 {
     private SidePanel sidePanel;
@@ -50,7 +46,9 @@ public class View extends JFrame
         userFrame = new UserFrame( this, listener );
     }    
     
-    public void setSidePanel(SidePanel pnl)
+    // This method sets the current side panel
+    // it gets called whenever we login a new user.
+    private void setSidePanel(SidePanel pnl)
     {
         if ( sidePanel != null )
             remove(sidePanel);
@@ -71,6 +69,7 @@ public class View extends JFrame
         sidePanel.setVisible(true);
     }
     
+    // Initializes the GUI, I will refrain from commenting all the layout code.
     private void initGUI()
     {
         setLayout(new GridBagLayout());
@@ -88,25 +87,26 @@ public class View extends JFrame
         gbc.gridwidth = 1;
         gbc.weightx = 0.8f;
         gbc.fill = GridBagConstraints.BOTH;
-
-        
+    
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
         menuBar.add(menu);
         
+        // Triggers the login dialog.
         JMenuItem loginMenu = new JMenuItem("Login");
-                
         loginMenu.addActionListener((ActionEvent e)->
         {
             doLogin();
         });
         
+        // Triggers the register dialog.
         JMenuItem regMenu = new JMenuItem("Register");
         regMenu.addActionListener((ActionEvent e) ->
         {
             doRegister();
         });
         
+        // Used for testing, resets the whole database.
         JMenuItem resetMenu = new JMenuItem("Reset Database");
         resetMenu.addActionListener((ActionEvent e)->
         {
@@ -114,11 +114,12 @@ public class View extends JFrame
                 listener.resetDataBaseDEBUG();
         });
         
+        // Displays the user management
         userMenu.addActionListener((ActionEvent e)-> { 
             userFrame.refreshData();
             userFrame.setVisible(true);
         });
-        
+        userMenu.setEnabled(false);
         
         menu.add(loginMenu);
         menu.add(regMenu);
@@ -131,9 +132,11 @@ public class View extends JFrame
         
         setSize(new Dimension(640, 480));
         setVisible(true);
-        setUserLevel("Peter", 2);
+        //setUserLevel("Peter", 2);
     }
     
+    // Handles logging in a user.
+    // Defaults to anonymous if the login failed.
     private void doLogin()
     {       
         JTextField tfUser = new JTextField();
@@ -153,11 +156,12 @@ public class View extends JFrame
             if (level > 0) {
                 setUserLevel(tfUser.getText(), level);
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid Username or password");
+                JOptionPane.showMessageDialog(null, "Invalid Username and/or password");
             }
         }
     }
     
+    // Handles registering a user.
     private void doRegister()
     {
         JTextField tfUsername = new JTextField();
@@ -201,6 +205,8 @@ public class View extends JFrame
         }
     }
     
+    // Sets the curernt user level and notifies all relevant components about
+    // the changes.
     private void setUserLevel(String user, int level)
     {
         CustomerPanel cpnl;
@@ -227,6 +233,9 @@ public class View extends JFrame
         }
     }
     
+    // This is called whenever the view needs to refresh all the data
+    // that varies, it gets triggered from various GUI components when they
+    // change the contents of the database.
     public void update() {
         
         if (productPanel == null) {

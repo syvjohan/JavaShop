@@ -27,7 +27,7 @@ public interface ShopListener {
     public abstract boolean setItemScore(Item item, int score, String ssn);
     
     // Return the user level
-    // 0 : FAILED
+    // 0 : FAILED/Anonymous
     // 1 : Customer
     // 2 : Employee
     public abstract int login(String userName, String password);

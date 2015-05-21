@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shop.View;
 
 import java.awt.Color;
@@ -26,10 +21,10 @@ import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 import shop.Model.Item;
 
-/**
- *
- * @author Zerkish
- */
+// This class implements the functionality for customers
+// It provides a textbox that lists all items currently in the cart
+// along with the total sum of these items.
+// Customers may rate items upon checking out.
 public class CustomerPanel extends SidePanel {
     
     private JTextArea taItems = new JTextArea();
@@ -46,13 +41,13 @@ public class CustomerPanel extends SidePanel {
         initGUI();
     }
     
+    // Creates the GUI.
     private void initGUI()
     {
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
       
-        
         gbc.insets = new Insets(4, 4, 4, 4);
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.gridx = 0;
@@ -76,6 +71,8 @@ public class CustomerPanel extends SidePanel {
         gbc.weightx = 0.5f;
         add(btnCheckout, gbc);
         
+        // This action listener implements the functionality for rating items upon
+        // checking out.
         btnCheckout.addActionListener((ActionEvent e) -> {
             boolean result = JOptionPane.showConfirmDialog(null,
                     "Would you like to rate the items?") == JOptionPane.OK_OPTION;
@@ -88,19 +85,22 @@ public class CustomerPanel extends SidePanel {
                     int rating = 0;
                     do
                     {                   
-                        String str = JOptionPane.showInputDialog(null, String.format("Rate %s (1-5)", i.getName()));
+                        String str = JOptionPane.showInputDialog(null,
+                                String.format("Rate %s (1-5)", i.getName()));
                         try {
                             rating = Integer.parseInt(str);
                             if (rating < 1 || rating > 5) {
                                 throw new NumberFormatException();
                             }                            
                         } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Please enter a number from 1-5");
+                            JOptionPane.showMessageDialog(null,
+                                    "Please enter a number from 1-5");
                             continue;
                         }
                         rated = true;
                     } while(!rated);
                     
+                    // Notify the DB about the new score.
                     listener.setItemScore(i, rating, ssn);                    
                 }                
             }            
@@ -114,12 +114,14 @@ public class CustomerPanel extends SidePanel {
         lblUser.setSize(400, 20);
     }
     
+    // Set the name of the current user.
     public void setUser(String username)
     {
         lblUser.setText(String.format("Inloggad: (%s)", username));
         userName = username;
     }
     
+    // Adds an item to the cart.
     public void addItemToCart(Item item)
     {
         boolean addNew = true;
@@ -153,5 +155,4 @@ public class CustomerPanel extends SidePanel {
         
         taItems.append(String.format("\nTotalt: %dkr", totalPrice));
     }
-    
 }

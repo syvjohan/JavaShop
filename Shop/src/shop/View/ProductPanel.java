@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shop.View;
 
 import java.awt.BorderLayout;
@@ -23,10 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import shop.Model.Item;
 
-/**
- *
- * @author Zerkish
- */
+// This class implements the functionality to display items in the shop
+// it uses the helper class ItemPanel to list all items as a vertical list
+// which is managed by a JScrollPane.
+// It also provides filtering for items based on category.
 public class ProductPanel extends JPanel {
     private ItemListener listener;
     private GridBagConstraints gbc = new GridBagConstraints();
@@ -47,7 +42,7 @@ public class ProductPanel extends JPanel {
         
         JPanel filterPanel = new JPanel();
         filterPanel.setLayout( new BorderLayout() );
-        filterPanel.add(new JLabel("Filter"), BorderLayout.WEST );
+        filterPanel.add(new JLabel("Filter:  "), BorderLayout.WEST );
         filterPanel.add(comboFilters);
         add(filterPanel, gbc);
         
@@ -60,6 +55,7 @@ public class ProductPanel extends JPanel {
         this.listener = listener;
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
+        // Implements filtering functionality.
         comboFilters.addItemListener((ItemEvent e) -> {
             String category = e.getItem().toString();
             for (ItemPanel pnl : items) {
@@ -72,6 +68,7 @@ public class ProductPanel extends JPanel {
         });
     }
     
+    // Add a new item to the panel
     public void addItem(Item item) {
         ItemPanel pnl = new ItemPanel(item, listener);
         items.add(pnl);
@@ -81,18 +78,22 @@ public class ProductPanel extends JPanel {
         panel.add(pnl, BorderLayout.CENTER);
     }
     
+    // Notify the ProductPanel of the user level of the current user
+    // This just gets passed on to each ItemPanel so it sets its button state.
     public void setUserLevel(int n) {
         for ( ItemPanel pnl : items ) {
             pnl.setUserLevel( n );
         }
     }
     
+    // Remove all items, used whenever we re-sync with the database.
     public void clearItems() {
         for(ItemPanel pnl : items) {
             panel.remove(pnl);
         }
     }
     
+    // Create filters for all categories while making sure we don't create duplicates.
     public void initFilters() {
         comboFilters.removeAllItems();
         comboFilters.addItem("All");

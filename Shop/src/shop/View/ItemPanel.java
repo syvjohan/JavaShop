@@ -12,10 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import shop.Model.Item;
 
-/**
- *
- * @author Zerkish
- */
+// This class is a layout aid for the product panel
+// it displays the data for one single item and is configured
+// as a horizontal panel.
 public class ItemPanel extends JPanel {
     
     private Item item;
@@ -55,6 +54,10 @@ public class ItemPanel extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         add(btnAddToCart, gbc);
+        
+        // This action listener gets triggered when someone presses
+        // the button associated with the item, for customers this means
+        // to "buy" the item, for staff is means to begin editing it.
         btnAddToCart.addActionListener((ActionEvent e) -> {
             if (listener != null) {
                 Item i = item.makeGenericCopy();
@@ -67,20 +70,11 @@ public class ItemPanel extends JPanel {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         
         lblItemName.setAlignmentX(LEFT_ALIGNMENT);
-        //lblItemName.setOpaque(true);
-        //lblItemName.setBackground(Color.RED);
         lblItemName.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        
         lblItemStock.setAlignmentX(LEFT_ALIGNMENT);
-        //lblItemStock.setOpaque(true);
-        //lblItemStock.setBackground(Color.BLUE);
         lblItemStock.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        
         lblItemPrice.setAlignmentX(LEFT_ALIGNMENT);
-        //lblItemPrice.setOpaque(true);
-        //lblItemPrice.setBackground(Color.GREEN);
         lblItemPrice.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        
         lblScore.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         lblScore.setAlignmentX(LEFT_ALIGNMENT);
         
@@ -89,11 +83,12 @@ public class ItemPanel extends JPanel {
         lblItemPrice.setText(String.format("Price: %-5.2fkr", item.getPrice()));
         lblScore.setText(String.format("Score: %.1f/5,0", item.getScore()));
         
-        
-        
         doLayout();
     }
     
+    // Notifies the itempanel about changes to the user level
+    // For anonymous users, we disable the buy button
+    // for staff/customers, it becomes enabled and the text is set accordingly.
     public void setUserLevel(int n) {
         if ( n == 0 ) {
             btnAddToCart.setEnabled(false);
@@ -108,6 +103,7 @@ public class ItemPanel extends JPanel {
         }
     }
     
+    // Return the item associated with the panel.
     public Item getItem() {
         return item;
     }

@@ -11,7 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import shop.Model.Item;
 
-    
+// This class implements the functionality for the staff
+// It allows editing, adding and removing of items.
 public class EmployeePanel extends SidePanel {
     
     private JTextField tfName = new JTextField();
@@ -34,6 +35,7 @@ public class EmployeePanel extends SidePanel {
         this.view = view;
         initGUI();
         
+        // Action listener for updating items.
         btnUpdate.addActionListener((ActionEvent e)-> {
             Item item = currentItem.makeGenericCopy();
             item.setName(tfName.getText());
@@ -52,6 +54,7 @@ public class EmployeePanel extends SidePanel {
             view.update();
         });
         
+        // Action listener for adding items.
         btnAdd.addActionListener((ActionEvent e)-> {
             Item item = new Item();
             item.setName(tfName.getText());
@@ -73,6 +76,7 @@ public class EmployeePanel extends SidePanel {
         });
     }
     
+    // Creates the GUI.
     private void initGUI() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -142,6 +146,7 @@ public class EmployeePanel extends SidePanel {
         btnRemove.setEnabled(false);
     }
     
+    // Tell the employeepanel to begin editing an item.
     public void editItem(Item item) {
         currentItem = item;
         tfName.setText(item.getName());
@@ -153,6 +158,7 @@ public class EmployeePanel extends SidePanel {
         view.update();
     }
     
+    // Set the current user name.
     public void setUser(String user) {
         lblUser.setText("Inloggad: (" + user + ")");
     }
