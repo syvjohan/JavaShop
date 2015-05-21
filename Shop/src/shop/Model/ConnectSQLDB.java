@@ -516,17 +516,17 @@ public class ConnectSQLDB {
                 String ssn = rs.getString("PERSONALNUMBER");
                 
                 if (oldUsername.equals(uName)) {
-                    statement.executeUpdate("UPDATE Person"
-                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
-                            + ", Person.name = " + person.getName()
-                            + ", Person.street = " + person.getStreet()
-                            + ", Person.postnumber = " + person.getZip()
-                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
+                    statement.executeUpdate("UPDATE Person "
+                            + "SET PERSONALNUMBER = '" + person.getSsn() 
+                            + "', name = '" + person.getName()
+                            + "', street = '" + person.getStreet()
+                            + "', postnumber = '" + person.getZip()
+                            + "' WHERE Person.PERSONALNUMBER = '" + ssn + "'");
                     
-                    statement.executeUpdate("UPDATE Staff"
-                            + " SET Customer.PERSONALNUMBER = " + person.getSsn()
-                            + ", Staff.username = " + person.getUsername()
-                            + " WHERE Staff.PERSONALNUMBER = '" + ssn + "'");
+                    statement.executeUpdate("UPDATE Staff "
+                            + "SET PERSONALNUMBER = '" + person.getSsn()
+                            + "', username = '" + person.getUsername()
+                            + "' WHERE PERSONALNUMBER = '" + ssn + "'");
                     
                     return true;
                 }
@@ -549,7 +549,7 @@ public class ConnectSQLDB {
             while (rs.next()) {
                 String uName = rs.getString("username");
                 String ssn = rs.getString("PERSONALNUMBER");
-                
+
                 if (oldUsername.equals(uName)) {
                     statement.executeUpdate("UPDATE Person "
                             + "SET PERSONALNUMBER = '" + person.getSsn() 
@@ -558,10 +558,10 @@ public class ConnectSQLDB {
                             + "', postnumber = '" + person.getZip()
                             + "' WHERE Person.PERSONALNUMBER = '" + ssn + "'");
                     
-                    statement.executeUpdate("UPDATE Customer"
-                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
-                            + ", Customer.username = " + person.getUsername()
-                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
+                    statement.executeUpdate("UPDATE Customer "
+                            + "SET PERSONALNUMBER = '" + person.getSsn()
+                            + "', username = '" + person.getUsername()
+                            + "' WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
                     
                     return true;
                 }
@@ -575,8 +575,15 @@ public class ConnectSQLDB {
     }
     
     public boolean updatePerson(Person person, String oldUsername) {
-        if (updateCustomer(person, oldUsername) || updateStaff(person, oldUsername)) {
-            return true;
+        ArrayList<String> tables = new ArrayList<>();
+        tables.add("Staff");
+        tables.add("Customer");
+        if(!find(person.getUsername(), tables, "username")) {
+            boolean isStaff = updateStaff(person, oldUsername);
+            boolean isCustomer = updateCustomer(person, oldUsername);
+            if (isCustomer || isStaff) {
+                return true;
+            }
         }
         
         return false;
