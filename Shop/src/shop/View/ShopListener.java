@@ -62,4 +62,7 @@ public interface ShopListener {
     
     //Delete level for person.
     public abstract boolean deleteUser(String username);
+    
+    //Close database and do cleanup
+    public abstract void close();
 }

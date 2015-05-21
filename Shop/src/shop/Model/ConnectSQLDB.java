@@ -65,7 +65,7 @@ public class ConnectSQLDB {
         return false;
     }
     
-    /*private void cleanUp() {
+    private void cleanUp() {
         try {
             rs.close();
             statement.close();
@@ -73,7 +73,7 @@ public class ConnectSQLDB {
         } catch (SQLException err) {
             err.printStackTrace();
         }  
-    }*/
+    }
     
     private ArrayList<Score> getAllRatings() {
         ArrayList<Score> container = new ArrayList<>();

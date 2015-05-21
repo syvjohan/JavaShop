@@ -174,20 +174,8 @@ public class ConfigDatabase implements ShopListener {
         return false;
     }
     
+    @Override
+    public void close() {
+        connectSQLDB.cleanUp();
+    }
 }
-
-//TODO UpdateItemScore.
-//Ta bort en vara ur sortimentet
-//Välja vilka varor som ska visas efter kategori
-//Lägga in en ny person.
-//SQL för att hämta all personal
-//Logga ut
-
-
-//Peter behöver:
-//En klass som hetter person (get set metoder) inkl username. KLAR!
-//En funktion som returnerar alla personer (anställda och kunder) KLAR!
-//En funktion för att ta bort en användare (arg username)  KLAR!
-//En funktion för att ta bort ett item (arg item) bägge retunerar bool. KLAR!
-//Updaterar en person (arg person).
-//Uppdaterar ett item (arg item) KLAR!
