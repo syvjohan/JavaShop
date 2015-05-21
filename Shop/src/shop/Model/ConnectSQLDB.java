@@ -214,6 +214,7 @@ public class ConnectSQLDB {
             rs = statement.executeQuery("SELECT ID, name, categoryID FROM Item");
             
             int c = 0;
+            int identifier = 0;
             ArrayList<Integer> arrCategories = new ArrayList<>();
             boolean flag = false;
             while(rs.next()) {
@@ -228,6 +229,7 @@ public class ConnectSQLDB {
                                 " AND Item.ID = '" + item.getProductId() + "'");
                         
                         c = category;
+                        identifier = id;
                         flag = true;
                         break;
                 }
@@ -244,6 +246,10 @@ public class ConnectSQLDB {
                     statement.executeUpdate("DELETE FROM Category "
                             + "WHERE ID = '" + c + "'");
                 }
+                
+                statement.executeUpdate("DELETE FROM Rating"
+                        + "WHERE ID = '" + identifier + "'");
+                
                 return true;
             }
             
