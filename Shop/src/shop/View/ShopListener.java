@@ -54,9 +54,12 @@ public interface ShopListener {
     //Return all person (staff and customer).
     public abstract Person[] getAllPersons();
     
+    //Updates the content on an already inserted person in db.
+    public abstract boolean updatePerson(Person person, String oldUsername);
+    
     //Delete a specific person from database.
-    public abstract boolean deleteUser(String username);
+    public abstract boolean deletePerson(String username);
     
     //Delete level for person.
-    public abstract boolean deleteUserLvl(String username, int lvl);
+    public abstract boolean deleteUser(String username);
 }

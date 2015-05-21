@@ -156,16 +156,21 @@ public class ConfigDatabase implements ShopListener {
     }
     
     @Override
-    public boolean deleteUser(String username) {
+    public boolean updatePerson(Person person, String oldUsername) {
+        return connectSQLDB.updatePerson(person, oldUsername);
+    }
+    
+    @Override
+    public boolean deletePerson(String username) {
         return connectSQLDB.deletePerson(username);
     }
     
     @Override
-    public boolean deleteUserLvl(String username, int lvl) {
+    public boolean deleteUser(String username) {
         //Kan orsaka problem om användaren endast har en userlvl då
         //getAllPersons() inte retunerar personen 
-        //eftersom den inte innehar något username
-       //return connectSQLDB.removeUserLvl(username, lvl);
+        //eftersom den inte innehar något username, funktionen fungerar endast om användaren har 2 stycken userLvl.
+       //return connectSQLDB.removeUser(username);
         return false;
     }
     
@@ -182,7 +187,7 @@ public class ConfigDatabase implements ShopListener {
 //Peter behöver:
 //En klass som hetter person (get set metoder) inkl username. KLAR!
 //En funktion som returnerar alla personer (anställda och kunder) KLAR!
-//En funktion för att ta bort en användar (arg username)  KLAR!
-//En funktion för att ta bort ett item (arg item) bägge retunerar bool.
+//En funktion för att ta bort en användare (arg username)  KLAR!
+//En funktion för att ta bort ett item (arg item) bägge retunerar bool. KLAR!
 //Updaterar en person (arg person).
 //Uppdaterar ett item (arg item) KLAR!

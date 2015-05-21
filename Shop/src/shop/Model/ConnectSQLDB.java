@@ -504,16 +504,117 @@ public class ConnectSQLDB {
         
         return container;
     }
+    
+    public boolean updateStaff(Person person, String oldUsername) {
+        try {
+            //Check if person exist.
+            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
+                    + "FROM Staff");
+            
+            while (rs.next()) {
+                String uName = rs.getString("username");
+                String ssn = rs.getString("PERSONALNUMBER");
+                
+                if (oldUsername.equals(uName)) {
+                    statement.executeUpdate("UPDATE Person"
+                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
+                            + ", Person.name = " + person.getName()
+                            + ", Person.street = " + person.getStreet()
+                            + ", Person.postnumber = " + person.getZip()
+                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    statement.executeUpdate("UPDATE Customer"
+                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
+                            + ", Customer.username = " + person.getUsername()
+                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    return true;
+                }
+            }
 
-    public boolean removeUserLvl(String username, int lvl) {
-        String ssn;
-        if (lvl == 1) {
-            ssn = deleteCustomer(username);
-            if (!ssn.isEmpty()) return true;
-        } else if (lvl == 2) {
-            ssn = deleteStaff(username);
-            if (!ssn.isEmpty()) return true;
+        
+        } catch (SQLException err) {
+            err.printStackTrace();
         }
+        
+        return false;
+    }
+            
+    public boolean updateCustomer(Person person, Sting oldUsername) {
+        try {
+            //Check if person exist.
+            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
+                    + "FROM Customer");
+            
+            while (rs.next()) {
+                String uName = rs.getString("username");
+                String ssn = rs.getString("PERSONALNUMBER");
+                
+                if (oldUsername.equals(uName)) {
+                    statement.executeUpdate("UPDATE Person"
+                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
+                            + ", Person.name = " + person.getName()
+                            + ", Person.street = " + person.getStreet()
+                            + ", Person.postnumber = " + person.getZip()
+                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    statement.executeUpdate("UPDATE Customer"
+                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
+                            + ", Customer.username = " + person.getUsername()
+                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    return true;
+                }
+            }
+
+        
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    public boolean updatePerson(Person person, String oldUsername) {
+        try {
+            //Check if person exist.
+            rs = statement.executeQuery("SELECT username, PERSONALNUMBER "
+                    + "FROM Customer");
+            
+            while (rs.next()) {
+                String uName = rs.getString("username");
+                String ssn = rs.getString("PERSONALNUMBER");
+                
+                if (oldUsername.equals(uName)) {
+                    statement.executeUpdate("UPDATE Person"
+                            + "SET Person.PERSONALNUMBER = " + person.getSsn() 
+                            + ", Person.name = " + person.getName()
+                            + ", Person.street = " + person.getStreet()
+                            + ", Person.postnumber = " + person.getZip()
+                            + " WHERE Person.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    statement.executeUpdate("UPDATE Customer"
+                            + "SET Customer.PERSONALNUMBER = " + person.getSsn()
+                            + ", Customer.username = " + person.getUsername()
+                            + " WHERE Customer.PERSONALNUMBER = '" + ssn + "'");
+                    
+                    return true;
+                }
+            }
+
+        
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        
+        return false;
+    }
+
+    public boolean removeUser(String username) {
+        String ssn1 = deleteCustomer(username);
+        String ssn2 = deleteStaff(username);
+            
+        if (!ssn1.isEmpty() || !ssn2.isEmpty()) return true;
         return false;
     }
     
@@ -590,8 +691,6 @@ public class ConnectSQLDB {
         
         return false;
     }
-    
-   
     
     public int createNewID() {
          ArrayList<Integer> container = getAllItemsID();
